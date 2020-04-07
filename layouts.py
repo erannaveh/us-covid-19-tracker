@@ -3,22 +3,8 @@ import dash_core_components as dcc
 import dash_html_components as html
 from dash.dependencies import Input, Output
 from graph_functions import statesSQL, countiesSQL, executeSQL, getStatesGraph, getCountiesGraph
-from table_functions import statesTableSQL, countiesTableSQL, executeTableSQL, getStatesTable, getCountiesTable, getBuildYourOwnTable, place_value
-
-def getTotals():
-    sql = 'select data_date, cases, deaths, cases_diff, deaths_diff, death_rate from vi_totals;'
-    df = executeSQL(sql)
-    return df
-
-def getStatesList():
-    sql = 'select state from vi_states;'
-    df = executeSQL(sql)
-    return df['state'].tolist()
-
-def getCountiesList():
-    sql = 'select state,county from vi_counties;'
-    df = executeSQL(sql)
-    return (df['state'] + ":" + df['county']).tolist()
+from table_functions import statesTableSQL, countiesTableSQL, executeTableSQL, getStatesTable, getCountiesTable, getBuildYourOwnTable, place_value, make_percent
+from callbacks import getTotals, getStatesList, getCountiesList
 
 state_indicators = getStatesList()
 county_indicators = getCountiesList()
@@ -42,27 +28,24 @@ faqLayout = html.Div([
     html.Hr(),
     html.H2('What is COVID-19?',
         style = {'width':'100%',
-                    'font-size': 20,
+                    'font-size': 30,
                     'text-decoration':'underline'
                 }),
-    html.P('COVID-19 is a shortening for "Coronavirus Disease-2019," a disease caused by the novel Coronavirus, SARS-nCov-2019. It is a highly infectious upper respiratory disease that was officially declared a pandemic by the World Health Organization on March 11, 2020.'),
+    html.P('COVID-19 is a shortening for "Coronavirus Disease-2019," a disease caused by the novel Coronavirus, SARS-nCov-2019. It is a highly infectious upper respiratory disease that was officially declared a pandemic by the World Health Organization on March 11, 2020.',style={'font-size':20}),
     html.H2('Where is my data from? How often is it updated?',
         style = {'width':'100%',
-                    'font-size': 20,
+                    'font-size': 30,
                     'text-decoration':'underline'
                 }),
-    html.Span('I update my data daily from the New York Times covid-19-data github repository. Specific details about the data can be found ',style={'layout':'inline-block'}),
-    dcc.Link('here.',href='https://github.com/nytimes/covid-19-data',style={'layout':'inline-block'}),
+    dcc.Markdown('''I update my data daily from the New York Times covid-19-data github repository. Specific details about the data can be found [here](https://github.com/nytimes/covid-19-data).''',style={'font-size':20}),
     html.H2('Where can I get more information?',
         style = {'width':'100%',
-                    'font-size': 20,
+                    'font-size': 30,
                     'text-decoration':'underline'
                 }),
-    html.Span('Refer to the '), 
-    dcc.Link('CDC',href='https://www.cdc.gov'),
-    html.Span(' and '),
-    dcc.Link('WHO',href='https://www.who.int'),
-    html.Span(' websites, as well as your own local authorities, to see the best ways to keep you and those around you safe.')
+    dcc.Markdown('''
+        Refer to the [CDC](https://www.cdc.gov) and [WHO](https://www.who.int) websites, as well as your own local authorities, to see the best ways to keep you and those around you safe.
+    ''',style={'font-size':20}),
     ])
 
 aboutLayout = html.Div([
@@ -72,61 +55,44 @@ aboutLayout = html.Div([
                     'text-decoration':'underline'
                 }),
     html.Hr(),
-    html.P('My name is Eran Naveh and I am a college student at UCSB passionate about software development.'),
-    html.P('Feel free to leave any feedback and connect on social media!'),
-    html.Span([
-        dcc.Link('Email', href='mailto:erannaveh@outlook.com'),
-        html.Span(' '),
-        dcc.Link('LinkedIn', href='https://www.linkedin.com/in/erannaveh'),
-        html.Span(' '),
-        dcc.Link('Instagram', href='https://www.instagram.com/erannaveh/')
-    ]),
+    dcc.Markdown('''My name is Eran Naveh and I am a student at UCSB passionate about software development.''',style={'font-size':25}),
+    dcc.Markdown('''Feel free to leave any feedback and connect on social media!''',style={'font-size':25}),
+    dcc.Markdown('''
+        [Email](mailto:erannaveh@outlook.com) [LinkedIn](https://www.linkedin.com/in/erannaveh) [Instagram](https://www.instagram.com/erannaveh/)
+    ''', style={'font-size':25}),
        
 ])
-
+headerSize = 25
+dataSize = 20
 homeLayout = html.Div([   
         html.Table([
             html.Tr([
-                html.Td([
-                    dcc.Markdown('''
-                        US Total Cases:
-                    '''),
-                    html.H1(
-                        place_value(totals['cases'].iloc[0]),
-                    )
-                ]),
-                html.Td([
-                    dcc.Markdown('''
-                        US Total Deaths:
-                    '''),
-                    html.H1(place_value(totals['deaths'].iloc[0]))
-                ]),
-                html.Td([
-                    dcc.Markdown('''
-                        US New Cases:
-                    '''),
-                    html.H1(place_value(totals['cases_diff'].iloc[0]))
-                ]),
-                html.Td([
-                    dcc.Markdown('''
-                        US New Deaths:
-                    '''),
-                    html.H1(place_value(totals['deaths_diff'].iloc[0]))
-                ]),
-                html.Td([
-                    dcc.Markdown('''
-                        US Death Rate:
-                    '''),
-                    html.H1(str(float(totals['death_rate'].iloc[0]*100))[0:4]+'%',
-                    )
-                ]),
-            ], style = {'width':'100%'}
-        )
-        ], style = {'width':'100%',
-                    'font-size': 30,
-                    'text-decoration':'underline'
-                    }
-        ),
+                html.Td(
+                    [dcc.Markdown('''US Total Cases''', style={'font-size':headerSize,'text-decoration':'underline'}),
+                     html.H1(place_value(totals['cases'].iloc[0]), style={'font-size':dataSize})],style={'text-align':'center'},
+                ),
+                html.Td(
+                    [dcc.Markdown('''US Total Deaths''', style={'font-size':headerSize,'text-decoration':'underline'}),
+                     html.H1(place_value(totals['deaths'].iloc[0]), style={'font-size':dataSize})],style={'text-align':'center'},
+                ),
+                html.Td(
+                    [dcc.Markdown('''US New Cases''', style={'font-size':headerSize,'text-decoration':'underline'}),
+                     html.H1(place_value(totals['cases_diff'].iloc[0]), style={'font-size':dataSize})],style={'text-align':'center'},
+                ),
+                html.Td(
+                    [dcc.Markdown('''US New Deaths''', style={'font-size':headerSize,'text-decoration':'underline'}),
+                     html.H1(place_value(totals['deaths_diff'].iloc[0]), style={'font-size':dataSize})],style={'text-align':'center'},
+                ),
+                html.Td(
+                    [dcc.Markdown('''US Death Rate''', style={'font-size':headerSize,'text-decoration':'underline'}),
+                     html.H1(make_percent(totals['death_rate'].iloc[0]), style={'font-size':dataSize})],style={'text-align':'center'},
+                ),
+                html.Td(
+                    [dcc.Markdown('''UPDATED''', style={'font-size':headerSize,'text-decoration':'underline'}),
+                     html.H1(totals['data_date'].iloc[0], style={'font-size':dataSize})],style={'text-align':'center'},
+                ),
+            ]),
+        ], style={'width':'100%'}),
 
         html.Table([
             html.Tr([
@@ -137,7 +103,8 @@ homeLayout = html.Div([
                             'font-size':25
                     }),
                     style={
-                        'width':'50%'
+                        'width':'50%',
+                        'text-align':'center'
                     }
                 ),
                 html.Td(
@@ -147,7 +114,8 @@ homeLayout = html.Div([
                             'font-size':25
                     }),
                     style={
-                        'width':'50%'
+                        'width':'50%',
+                        'text-align':'center'
                     }
                 )
             ])
@@ -229,7 +197,8 @@ homeLayout = html.Div([
             Find Your Data
             ''')
         ], style={
-            'font-size': 25
+            'font-size': 25,
+            'text-align': 'center'
         }),
 
         html.Table([

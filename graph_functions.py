@@ -64,7 +64,7 @@ def getStatesGraph(states_selected, deathsOrCasesStates):
             x=stateDF['data_date'],
             y=stateDF[deathsOrCasesStates.lower()],
             mode='lines+markers',
-            name=state.title() + ' ' + deathsOrCasesStates.title()
+            name=state.title()
         ))
     fig.update_xaxes(
         tickangle=45,
@@ -74,7 +74,7 @@ def getStatesGraph(states_selected, deathsOrCasesStates):
         zeroline=True, 
         zerolinewidth=1, 
         zerolinecolor='black',
-        nticks = 25 )
+        nticks = 15 )
     fig.update_yaxes(
         showgrid=True, 
         gridwidth=2, 
@@ -116,7 +116,7 @@ def getCountiesGraph(counties_selected, deathsOrCasesCounties):
             x=countyDF['data_date'],
             y=countyDF[deathsOrCasesCounties.lower()],
             mode='lines+markers',
-            name=county.title() + ', ' + state.title() + ' ' + deathsOrCasesCounties.title()
+            name=county.title() + ',<br>' + state.title() 
         ))
     fig.update_xaxes(
         tickangle=45,
@@ -126,7 +126,7 @@ def getCountiesGraph(counties_selected, deathsOrCasesCounties):
         zeroline=True, 
         zerolinewidth=1, 
         zerolinecolor='black',
-        nticks = 25)
+        nticks = 15)
     fig.update_yaxes(
         showgrid=True, 
         gridwidth=2, 

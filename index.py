@@ -1,7 +1,6 @@
 import dash_core_components as dcc
 import dash_html_components as html
 from dash.dependencies import Input, Output
-
 from app import app
 from layouts import homeLayout, faqLayout, aboutLayout
 import callbacks
@@ -10,42 +9,23 @@ import callbacks
 app.layout = html.Div([
     html.Table([
             html.Tr([
-                html.Td(
-                    html.H1('''
-                        UScovid19tracker.io
-                    ''',
-                    style = {
-                        'font-size':30
-                    })
-                ),
-                html.Td([
-                    html.Span('''
-                    LAST UPDATED: 
-                    ''',
-                        style = {
-                            'font-size':20
-                        }),
-                    html.Span(callbacks.getTotals()['data_date'].iloc[0],
-                        style = {
-                            'font-size':18
-                        })
-                ]),
+                html.Td(dcc.Markdown('''**uscovid19tracker.info**''',style = {'font-size':30,}),),
                 html.Td(style={'width':'35%'}),
                 html.Td(
-                    dcc.Link('Home',  href='/'
-                    , style = {'font-size':20})
+                    dcc.Link('Home',  href='/', style = {'font-size':20}),
+                    style={'vertical-align':'top'}
                 ),
                 html.Td(
-                    dcc.Link('FAQ',  href='/faq'
-                    , style = {'font-size':20})
+                    dcc.Link('FAQ',  href='/faq', style = {'font-size':20}),
+                    style={'vertical-align':'top'}
                 ),
                 html.Td(
-                    dcc.Link('About',  href='/about'
-                    , style = {'font-size':20})
+                    dcc.Link('About',  href='/about', style = {'font-size':20}),
+                    style={'vertical-align':'top'}
                 ),
                 html.Td(
-                    dcc.Link('Buy Me A Coffee :)',href='https://buymeacoff.ee/XRPHs5J'
-                    , style = {'font-size':20})
+                    dcc.Markdown('[Buy Me A Coffee :)](https://buymeacoff.ee/XRPHs5J)', style = {'font-size':20}),
+                    style={'vertical-align':'top'}
                 ),
 
             ])
@@ -60,6 +40,7 @@ app.layout = html.Div([
 @app.callback(Output('page-content', 'children'),
               [Input('url', 'pathname')])
 def display_page(pathname):
+    app.title = 'US COVID-19 Tracker'
     if pathname == '/' or pathname == '/home':
          return homeLayout
     elif pathname == '/faq':
@@ -69,5 +50,6 @@ def display_page(pathname):
     else:
         return '404'
 
-if __name__ == '__main__':
-    app.run_server(debug=True)
+
+# if __name__ == '__main__':
+#    app.run_server(debug=True)

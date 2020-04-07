@@ -1,9 +1,8 @@
 import pandas as pd
-import plotly.figure_factory as ff
 import pymysql as mysql
 from graph_functions import getDBConnection
 import plotly.graph_objects as go
-import dash_table
+
 
 columnNames = {
     'StatesTableColNames': ['State','Cases','Deaths','New <br>Cases','New <br>Deaths','Death <br>Rate','% Total <br>Cases', '% Total <br>Deaths'],
