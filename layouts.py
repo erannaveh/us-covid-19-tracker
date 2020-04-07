@@ -56,7 +56,7 @@ aboutLayout = html.Div([
                 }),
     html.Hr(),
     dcc.Markdown('''My name is Eran Naveh and I am a student at UCSB passionate about software development.''',style={'font-size':25}),
-    dcc.Markdown('''Feel free to leave any feedback and connect on social media!''',style={'font-size':25}),
+    dcc.Markdown('''I'm always updating and improving this site, so feel free to leave any feedback and connect on social media!''',style={'font-size':25}),
     dcc.Markdown('''
         [Email](mailto:erannaveh@outlook.com) [LinkedIn](https://www.linkedin.com/in/erannaveh) [Instagram](https://www.instagram.com/erannaveh/)
     ''', style={'font-size':25}),
