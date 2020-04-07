@@ -25,8 +25,8 @@ class layout:
                     color="white",
                     size = 11
                )
-    headerAlignment = ['center','left']
-    cellAlignment = ['center','right']
+    headerAlignment = 'left'
+    cellAlignment = ['left','right']
 
 #returns sql command for states based on input
 def statesTableSQL(states):
@@ -140,7 +140,8 @@ def getCellValues(df, colName):
         cellValues.append(df[i])
     return cellValues
 
-def getTable(df, cellValues, wordCount=1):
+def getTable(df, cellValues, wordCount=1, BYO=False):
+    numRows = df.shape[0]
     fig = go.Figure(
         data=[go.Table(
             columnwidth = 200,
@@ -158,7 +159,10 @@ def getTable(df, cellValues, wordCount=1):
                 height= wordCount * 25
             ))
         ])
-    fig.update_layout(autosize=True, margin=go.layout.Margin(l=0, r=0, b=0, t=0, pad=0))
+    if(BYO==False):
+        fig.update_layout(autosize=True, margin=go.layout.Margin(l=0, r=0, b=0, t=0, pad=0,autoexpand=True),height=numRows*80)
+    else:
+        fig.update_layout(autosize=True, margin=go.layout.Margin(l=0, r=0, b=0, t=0, pad=0,autoexpand=True))
     return fig 
 
 def getStatesTable(states_selected):
@@ -202,6 +206,6 @@ def getBuildYourOwnTable(num_states_or_counties, states_or_counties, location, o
     df.columns = columns
     df = prepareBYOTableDF(df, states_or_counties)
     cellValues = getCellValues(df, colNames)
-    fig = getTable(df, cellValues)
+    fig = getTable(df, cellValues, BYO=True)
     return fig
     

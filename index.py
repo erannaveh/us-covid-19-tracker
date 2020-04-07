@@ -2,14 +2,18 @@ import dash_core_components as dcc
 import dash_html_components as html
 from dash.dependencies import Input, Output
 from app import app
-from layouts import homeLayout, faqLayout, aboutLayout
+from layouts import homeLayout, faqLayout, aboutLayout, totals
 import callbacks
 
 
 app.layout = html.Div([
     html.Table([
             html.Tr([
-                html.Td(dcc.Markdown('''**uscovid19tracker.info**''',style = {'font-size':30,}),),
+                html.Td([
+                    dcc.Markdown('''**uscovid19tracker.info**''',style = {'font-size':30,}),
+                    html.Span('Last Updated: ', style={'font-size':20}),
+                    html.Span(totals['data_date'].iloc[0], style={'font-size':20})
+                    ]),
                 html.Td(style={'width':'35%'}),
                 html.Td(
                     dcc.Link('Home',  href='/', style = {'font-size':20}),

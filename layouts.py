@@ -87,10 +87,10 @@ homeLayout = html.Div([
                     [dcc.Markdown('''US Death Rate''', style={'font-size':headerSize,'text-decoration':'underline'}),
                      html.H1(make_percent(totals['death_rate'].iloc[0]), style={'font-size':dataSize})],style={'text-align':'center'},
                 ),
-                html.Td(
-                    [dcc.Markdown('''UPDATED''', style={'font-size':headerSize,'text-decoration':'underline'}),
-                     html.H1(totals['data_date'].iloc[0], style={'font-size':dataSize})],style={'text-align':'center'},
-                ),
+                #html.Td(
+                 #   [dcc.Markdown('''UPDATED''', style={'font-size':headerSize,'text-decoration':'underline'}),
+                  #   html.H1(totals['data_date'].iloc[0], style={'font-size':dataSize})],style={'text-align':'center'},
+                #),
             ]),
         ], style={'width':'100%'}),
 
@@ -177,12 +177,8 @@ homeLayout = html.Div([
 
       html.Table([
             html.Tr([
-                html.Td( 
-                    dcc.Graph(id='states_indicator_table'),
-                ),
-                html.Td(
-                    dcc.Graph(id='counties_indicator_table'),
-                )
+                html.Td(dcc.Graph(id='states_indicator_table'),style={'vertical-align':'top'}),
+                html.Td(dcc.Graph(id='counties_indicator_table'),style={'vertical-align':'top'})
             ],style = {'width':'100%'})
         ],
             style = {
