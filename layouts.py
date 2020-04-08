@@ -177,8 +177,8 @@ homeLayout = html.Div([
 
       html.Table([
             html.Tr([
-                html.Td(dcc.Graph(id='states_indicator_table'),style={'vertical-align':'top'}),
-                html.Td(dcc.Graph(id='counties_indicator_table'),style={'vertical-align':'top'})
+                html.Td(dcc.Graph(id='states_indicator_table'),style={'vertical-align':'top','width':'50%'}),
+                html.Td(dcc.Graph(id='counties_indicator_table'),style={'vertical-align':'top','width':'50%'})
             ],style = {'width':'100%'})
         ],
             style = {
