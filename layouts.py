@@ -6,8 +6,9 @@ from graph_functions import statesSQL, countiesSQL, executeSQL, getStatesGraph, 
 from table_functions import statesTableSQL, countiesTableSQL, executeTableSQL, getStatesTable, getCountiesTable, getBuildYourOwnTable, place_value, make_percent
 from callbacks import getTotals, getStatesList, getCountiesList
 
-state_indicators = getStatesList()
-county_indicators = getCountiesList()
+state_indicators = ['Top 5 States','Pacific','Mountain','West North Central','West South Central',
+                    'East North Central','East South Central','New England','Mid Atlantic','South Atlantic']+getStatesList()
+county_indicators = ['Top 5 Counties','Big Cities','Bay Area']+getCountiesList()
 nationally_or_state_indicator_options ={
     'States': ['The Nation'],
     'Counties': ['The Nation'] + state_indicators
@@ -64,7 +65,7 @@ aboutLayout = html.Div([
 ])
 headerSize = 25
 dataSize = 20
-homeLayout = html.Div([   
+homeLayout = html.Div([ 
         html.Table([
             html.Tr([
                 html.Td(
@@ -93,22 +94,23 @@ homeLayout = html.Div([
                 #),
             ]),
         ], style={'width':'100%'}),
-
         html.Table([
             html.Tr([
                 html.Td(
-                    html.H1('Compare States', 
+                    html.H1('Compare States and Regions', 
                         style={
                             'width':'100%',
-                            'font-size':25
+                            'font-size':25,
+                            'vertical-align':'center'
                     }),
                     style={
                         'width':'50%',
-                        'text-align':'center'
+                        'text-align':'center',
+                        'vertical-align':'center'
                     }
                 ),
                 html.Td(
-                    html.H1('Compare Counties', 
+                    html.H1('Compare Counties and Regions', 
                         style={
                             'width':'100%',
                             'font-size':25
@@ -135,7 +137,7 @@ homeLayout = html.Div([
                         ),
                         dcc.RadioItems(
                             id='deathsOrCasesStates',
-                            options=[{'label': i, 'value': i} for i in ['Cases', 'Deaths']],
+                            options=[{'label': i, 'value': i} for i in ['Cases', 'Deaths','New Cases','New Deaths']],
                             value='Cases',
                             labelStyle={'display': 'inline-block'}
                         )
@@ -151,7 +153,7 @@ homeLayout = html.Div([
                         ),
                         dcc.RadioItems(
                             id='deathsOrCasesCounties',
-                            options=[{'label': i, 'value': i} for i in ['Cases', 'Deaths']],
+                            options=[{'label': i, 'value': i} for i in ['Cases', 'Deaths','New Cases','New Deaths']],
                             value='Cases',
                             labelStyle={'display': 'inline-block'}
                         )

@@ -1,26 +1,12 @@
 import pandas as pd 
 import pymysql as mysql
 import plotly.graph_objects as go
-import json 
-import os
-
-
-def getDBConnection():
-    dbInfoPath = os.getenv('dbinfo')
-    with open(dbInfoPath) as f:
-        data = json.load(f)
-    db = mysql.connect(
-        host=data['host'],
-        user=data['user'],
-        passwd=data['password'],
-        database=data['database'],
-    )
-    return db
+from table_functions import getDBConnection, top5StatesList, top5CountiesList, statesSwitcher, countiesSwitcher
 
 
 
 def statesSQL(states):
-    sql = "select data_date,state,cases,deaths from states where state in("
+    sql = "select data_date,state,cases,deaths,cases_diff,deaths_diff from states where state in("
     states = states.replace(",", "\',\'")
     sql = sql + "'" + states + "') order by state, data_date;"
     return sql
@@ -28,7 +14,7 @@ def statesSQL(states):
 #returns sql command for counties based on input
 def countiesSQL(counties):
     counties = counties.split(',')
-    sql = "select data_date,state,county,cases,deaths from counties where "
+    sql = "select data_date,state,county,cases,deaths,cases_diff,deaths_diff from counties where "
     for county in counties:
         countyStateList = county.split(':')
         sql += "(state='"+countyStateList[0]+"' and county='"+countyStateList[1]+"') or "
@@ -46,7 +32,24 @@ def executeSQL(sql):
     df.columns = [i[0] for i in cursor.description]
     return df
 
+
+
+def cleanInput(inputs, states_or_counties):
+   return
+    
 def getStatesGraph(states_selected, deathsOrCasesStates):
+    if(deathsOrCasesStates=='New Cases'):
+        column = 'cases_diff'
+    elif(deathsOrCasesStates=='New Deaths'):
+        column = 'deaths_diff'
+    else:
+        column = deathsOrCasesStates
+    if(not states_selected):
+        states_selected = ['Top 5 States']
+    for region in statesSwitcher:
+        if(region in states_selected):
+            states_selected = states_selected + statesSwitcher[region]
+            del states_selected[states_selected.index(region)]
     if (isinstance(states_selected, list)):
         inputStates = ','.join(states_selected)
         sql = statesSQL(inputStates)
@@ -62,7 +65,7 @@ def getStatesGraph(states_selected, deathsOrCasesStates):
         # print(stateDF[deathsOrCases.lower()])
         fig.add_trace(go.Scatter(
             x=stateDF['data_date'],
-            y=stateDF[deathsOrCasesStates.lower()],
+            y=stateDF[column.lower()],
             mode='lines+markers',
             name=state.title()
         ))
@@ -98,6 +101,18 @@ def getStatesGraph(states_selected, deathsOrCasesStates):
     return fig
 
 def getCountiesGraph(counties_selected, deathsOrCasesCounties):
+    if(deathsOrCasesCounties=='New Cases'):
+        column = 'cases_diff'
+    elif(deathsOrCasesCounties=='New Deaths'):
+        column = 'deaths_diff'
+    else:
+        column = deathsOrCasesCounties
+    if(not counties_selected):
+        counties_selected = ['Top 5 Counties']
+    for region in countiesSwitcher:
+        if(region in counties_selected):
+            counties_selected = counties_selected + countiesSwitcher[region]
+            del counties_selected[counties_selected.index(region)]
     if (isinstance(counties_selected, list)):
         inputCounties = ','.join(counties_selected)
         sql = countiesSQL(inputCounties)
@@ -114,7 +129,7 @@ def getCountiesGraph(counties_selected, deathsOrCasesCounties):
         countyDF = stateDF.loc[stateDF['county'] == county]
         fig.add_trace(go.Scatter(
             x=countyDF['data_date'],
-            y=countyDF[deathsOrCasesCounties.lower()],
+            y=countyDF[column.lower()],
             mode='lines+markers',
             name=county.title() + ',<br>' + state.title() 
         ))

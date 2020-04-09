@@ -1,7 +1,21 @@
 import pandas as pd
 import pymysql as mysql
-from graph_functions import getDBConnection
 import plotly.graph_objects as go
+import numpy as np
+import os
+import json
+
+def getDBConnection():
+    dbInfoPath = os.getenv('dbinfo')
+    with open(dbInfoPath) as f:
+        data = json.load(f)
+    db = mysql.connect(
+        host=data['host'],
+        user=data['user'],
+        passwd=data['password'],
+        database=data['database'],
+    )
+    return db
 
 
 columnNames = {
@@ -12,6 +26,7 @@ columnNames = {
     'BYOCountiesTableColNames': ['State','County','Cases','Deaths','New Cases','New Deaths', 'Death Rate','% State Cases',
                     '% State Deaths', '% Total Cases', '% Total Deaths']
 }
+
 class layout:
     colorscale = [[0,'indianRed'],[.5,'lightgray'],[1,'whitesmoke']]
     headerColor = 'firebrick'
@@ -140,7 +155,16 @@ def getCellValues(df, colName):
         cellValues.append(df[i])
     return cellValues
 
-def getTable(df, cellValues, wordCount=1, BYO=False):
+def getTable(df, cellValues, wordCount=1, BYO=False, ordering_indicator=''):
+    """ headerColors = []
+    if(BYO):
+        for column in df.columns:
+            if(column==ordering_indicator):
+                headerColors.append('silver')
+            else:
+                headerColors.append(layout.headerColor)
+    else:
+        headerColors = layout.headerColor """
     numRows = df.shape[0]
     fig = go.Figure(
         data=[go.Table(
@@ -165,11 +189,49 @@ def getTable(df, cellValues, wordCount=1, BYO=False):
         fig.update_layout(autosize=True, margin=go.layout.Margin(l=0, r=0, b=0, t=0, pad=0,autoexpand=True))
     return fig 
 
-def getStatesTable(states_selected):
-    if (isinstance(states_selected, list)):
-        inputStates = ','.join(states_selected)
+top5States = np.array(executeTableSQL(buildYourOwnTableSQL(5,'States','The Nation','Cases'))['state'])
+top5StatesList = top5States.tolist()
+statesSwitcher={
+    'Top 5 States': top5StatesList,
+    'Pacific': ['Washington','Oregon','California','Alaska','Hawaii'],
+    'Mountain': ['Idaho','Montana','Wyoming','Utah','Colorado','Nevada','Arizona','New Mexico'],
+    'West North Central': ['North Dakota','South Dakota','Minnesota','Iowa','Nebraska','Kansas','Missouri'],
+    'West South Central': ['Texas','Oklahoma','Arkansas','Louisiana'],
+    'East North Central': ['Wisconsin','Michigan','Illinois','Indiana','Ohio'],
+    'East South Central': ['Kentucky','Tennessee','Mississippi','Alabama'],
+    'New England': ['Maine','Vermont','New Hampshire','Massachusetts','Connecticut','Rhode Island'],
+    'Mid Atlantic': ['New York','Pennsylvania','New Jersey','Maryland','Delaware','District of Columbia'],
+    'South Atlantic': ['West Virginia','Virginia','North Carolina','South Carolina','Georgia','Florida']
+
+}
+top5Counties = (np.array(executeTableSQL(buildYourOwnTableSQL(5,'Counties','The Nation','Cases'))['state'])+":")+np.array(executeTableSQL(buildYourOwnTableSQL(5,'Counties','The Nation','Cases'))['county'])
+top5CountiesList = top5Counties.tolist()
+countiesSwitcher={
+    'Top 5 Counties': top5CountiesList,
+    'Big Cities': ['New York:New York City','California:Los Angeles','Illinois:Cook','District of Columbia:District of Columbia','Texas:Harris'],
+    'Bay Area': ['California:Napa','California:Solano',
+    'California:Santa Clara','California:San Francisco','California:Contra Costa','California:Alameda',
+    'California:San Mateo','California:Sonoma','California:Marin'],
+}
+def cleanInput(inputs, states_or_counties):
+    if(not inputs):
+        inputs = ['Top 5 '+states_or_counties]
+    if(states_or_counties=='States'):
+        switcher = statesSwitcher
     else:
-        inputStates = states_selected
+        switcher = countiesSwitcher
+    for region in switcher:
+        if(region in inputs):
+            inputs = inputs + switcher[region]
+            del inputs[inputs.index(region)]
+    if (isinstance(inputs, list)):
+        finalInput = ','.join(inputs)
+    else:
+        finalInput = inputs
+    return finalInput
+
+def getStatesTable(states_selected):
+    inputStates = cleanInput(states_selected, 'States')
     sql = statesTableSQL(inputStates)
     allStatesDF = executeTableSQL(sql)
     allStatesDF.columns = columnNames['StatesTableColNames']
@@ -180,10 +242,7 @@ def getStatesTable(states_selected):
     return fig
 
 def getCountiesTable(counties_selected):
-    if(isinstance(counties_selected,list)):
-        inputCounties = ','.join(counties_selected)
-    else:
-        inputCounties = counties_selected
+    inputCounties = cleanInput(counties_selected,'Counties')
     sql = countiesTableSQL(inputCounties)
     allCountiesDF = executeTableSQL(sql)
     allCountiesDF.columns = columnNames['CountiesTableColNames']
