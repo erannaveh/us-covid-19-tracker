@@ -363,7 +363,7 @@ homeLayoutMobile = html.Div([
                 type='number',
                 value = 5,
                 style={'width':'100%'}
-            ),style={'width':'25%'}
+            ),style={'width':'17%'}
             ),
 
             html.Td(dcc.Dropdown(
@@ -390,10 +390,10 @@ homeLayoutMobile = html.Div([
             html.Td(dcc.Dropdown(
                 id='ordering_indicator',
                 value='cases'
-            ), style = {'width':'20%'}
+            ), style = {'width':'28%'}
             )
             ])
-        ], style={'font-size':25}
+        ], style={'font-size':22}
         ),
 
         
