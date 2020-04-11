@@ -2,10 +2,12 @@ import dash_core_components as dcc
 import dash_html_components as html
 from dash.dependencies import Input, Output
 from app import app
-from layouts import homeLayout, faqLayout, aboutLayout, totals
+from layouts import homeLayout, faqLayout, aboutLayout, totals, homeLayoutMobile
 import callbacks
+from flask import request
 
 
+print(totals['data_date'].iloc[0])
 app.layout = html.Div([
     html.Table([
             html.Tr([
@@ -41,19 +43,27 @@ app.layout = html.Div([
     html.Div(id='page-content')
 ])
 
+def isMobile():
+    print(request.user_agent.string)
+    print(request.user_agent.platform)
+    print(request.user_agent.browser)
+
+    return (request.user_agent.platform == 'iphone' or request.user_agent.platform == 'android')
+
 @app.callback(Output('page-content', 'children'),
               [Input('url', 'pathname')])
 def display_page(pathname):
+    layout = 0
     app.title = 'US COVID-19 Tracker'
     if pathname == '/' or pathname == '/home':
-         return homeLayout
+        if(isMobile()):
+            layout = homeLayoutMobile
+        else:
+            layout = homeLayout
     elif pathname == '/faq':
-         return faqLayout
+        layout = faqLayout
     elif pathname == '/about':
-        return aboutLayout
+        layout = aboutLayout
     else:
-        return '404'
-
-
-# if __name__ == '__main__':
-#    app.run_server(debug=True)
+        layout = '404'
+    return layout

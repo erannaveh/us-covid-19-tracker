@@ -251,3 +251,152 @@ homeLayout = html.Div([
                 dcc.Graph(id='build_your_own_table')
             ], style={'width': '100%', 'display': 'inline-block'}),
     ])
+
+homeLayoutMobile = html.Div([
+     html.Table([
+            html.Tr([
+                html.Td(
+                    [dcc.Markdown('''US Total Cases''', style={'font-size':headerSize,'text-decoration':'underline'}),
+                     html.H1(place_value(totals['cases'].iloc[0]), style={'font-size':dataSize})],style={'text-align':'center'},
+                ),
+                html.Td(
+                    [dcc.Markdown('''US Total Deaths''', style={'font-size':headerSize,'text-decoration':'underline'}),
+                     html.H1(place_value(totals['deaths'].iloc[0]), style={'font-size':dataSize})],style={'text-align':'center'},
+                ),
+                html.Td(
+                    [dcc.Markdown('''US New Cases''', style={'font-size':headerSize,'text-decoration':'underline'}),
+                     html.H1(place_value(totals['cases_diff'].iloc[0]), style={'font-size':dataSize})],style={'text-align':'center'},
+                ),
+                html.Td(
+                    [dcc.Markdown('''US New Deaths''', style={'font-size':headerSize,'text-decoration':'underline'}),
+                     html.H1(place_value(totals['deaths_diff'].iloc[0]), style={'font-size':dataSize})],style={'text-align':'center'},
+                ),
+                html.Td(
+                    [dcc.Markdown('''US Death Rate''', style={'font-size':headerSize,'text-decoration':'underline'}),
+                     html.H1(make_percent(totals['death_rate'].iloc[0]), style={'font-size':dataSize})],style={'text-align':'center'},
+                ),
+                #html.Td(
+                 #   [dcc.Markdown('''UPDATED''', style={'font-size':headerSize,'text-decoration':'underline'}),
+                  #   html.H1(totals['data_date'].iloc[0], style={'font-size':dataSize})],style={'text-align':'center'},
+                #),
+            ]),
+        ], style={'width':'100%'}),
+
+
+        html.Table([
+            html.Tr([
+                html.Td(
+                    html.Div([
+                        dcc.Dropdown(
+                            id='states_selected',
+                            options=[{'label': i, 'value': i} for i in state_indicators],
+                            value='California',
+                            multi=True,
+                        ),
+                        dcc.RadioItems(
+                            id='deathsOrCasesStates',
+                            options=[{'label': i, 'value': i} for i in ['Cases', 'Deaths','New Cases','New Deaths']],
+                            value='Cases',
+                            labelStyle={'display': 'inline-block'}
+                        )
+                    ])
+                ,style={'width':'50%'}),
+            ]),
+            html.Tr([
+                html.Td(dcc.Graph(id='states_indicator_graphic'),style={'vertical-align':'top','width':'50%'})
+            ]),
+            html.Tr([
+                html.Td(dcc.Graph(id='states_indicator_table'),style={'vertical-align':'top','width':'50%'})
+            ]),
+        ]),
+
+         html.Table([
+            html.Tr([
+                   html.Td(
+                    html.Div([
+                        dcc.Dropdown(
+                            id='counties_selected',
+                            options=[{'label': i, 'value': i} for i in county_indicators],
+                            value='California:Santa Barbara',
+                            multi=True
+                        ),
+                        dcc.RadioItems(
+                            id='deathsOrCasesCounties',
+                            options=[{'label': i, 'value': i} for i in ['Cases', 'Deaths','New Cases','New Deaths']],
+                            value='Cases',
+                            labelStyle={'display': 'inline-block'}
+                        )
+                    ]),
+                    style = {'width':'50%'})
+            ]),
+            html.Tr([
+                html.Td(dcc.Graph(id='counties_indicator_graphic'),style={'vertical-align':'top','width':'50%'})
+            ]),
+            html.Tr([
+                html.Td(dcc.Graph(id='counties_indicator_table'),style={'vertical-align':'top','width':'50%'})
+            ]),
+        ]),
+
+         
+        html.Div([
+            dcc.Markdown('''
+            Find Your Data
+            ''')
+        ], style={
+            'font-size': 25,
+            'text-align': 'center'
+        }),
+
+        html.Table([
+            html.Tr([
+
+            html.Td(
+                dcc.Markdown('''Top '''),
+            ), 
+            
+        
+            html.Td(
+                dcc.Input(
+                id='num_states_or_counties',
+                type='number',
+                value = 5
+            )
+            ),
+
+            html.Td(dcc.Dropdown(
+                id='states_or_counties_indicator',
+                options=[{'label': i, 'value': i} for i in nationally_or_state_indicator_options.keys()],
+                value='States'
+            ), style = {'width':'25%'}
+            ),
+
+            html.Td(
+                dcc.Markdown(''' in ''')
+            ),
+
+            html.Td(dcc.Dropdown(
+                id='nationally_or_state_indicator',
+                value='The Nation'
+            ), style = {'width':'30%'}
+            ),
+            
+            html.Td( 
+                dcc.Markdown('''by ''')
+            ),
+            
+            html.Td(dcc.Dropdown(
+                id='ordering_indicator',
+                value='cases'
+            ), style = {'width':'20%'}
+            )
+            ])
+        ]
+        ),
+
+        
+    
+        html.Div([
+                dcc.Graph(id='build_your_own_table')
+            ], style={'width': '100%', 'display': 'inline-block'}),
+
+])
