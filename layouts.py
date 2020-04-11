@@ -286,6 +286,20 @@ homeLayoutMobile = html.Div([
 
 
         html.Table([
+            html.Tr(
+                html.Td(
+                    html.H1('Compare States and Regions', 
+                        style={
+                            'width':'100%',
+                            'font-size':30,
+                            'vertical-align':'center'
+                    }),
+                    style={
+                        'text-align':'center',
+                        'vertical-align':'center'
+                    }
+                ),
+            ),
             html.Tr([
                 html.Td(
                     html.Div([
@@ -313,6 +327,20 @@ homeLayoutMobile = html.Div([
         ], style={'font-size':30}),
 
          html.Table([
+            html.Tr(
+                html.Td(
+                    html.H1('Compare Counties and Regions', 
+                        style={
+                            'width':'100%',
+                            'font-size':30,
+                            'vertical-align':'center'
+                    }),
+                    style={
+                        'text-align':'center',
+                        'vertical-align':'center'
+                    }
+                ),
+            ),
             html.Tr([
                    html.Td(
                     html.Div([
