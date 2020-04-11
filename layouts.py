@@ -65,6 +65,8 @@ aboutLayout = html.Div([
 ])
 headerSize = 25
 dataSize = 20
+headerSizeMobile = 35
+dataSizeMobile = 30
 homeLayout = html.Div([ 
         html.Table([
             html.Tr([
@@ -256,24 +258,24 @@ homeLayoutMobile = html.Div([
      html.Table([
             html.Tr([
                 html.Td(
-                    [dcc.Markdown('''US Total Cases''', style={'font-size':headerSize,'text-decoration':'underline'}),
-                     html.H1(place_value(totals['cases'].iloc[0]), style={'font-size':dataSize})],style={'text-align':'center'},
+                    [dcc.Markdown('''US Total Cases''', style={'font-size':headerSizeMobile,'text-decoration':'underline'}),
+                     html.H1(place_value(totals['cases'].iloc[0]), style={'font-size':dataSizeMobile})],style={'text-align':'center'},
                 ),
                 html.Td(
-                    [dcc.Markdown('''US Total Deaths''', style={'font-size':headerSize,'text-decoration':'underline'}),
-                     html.H1(place_value(totals['deaths'].iloc[0]), style={'font-size':dataSize})],style={'text-align':'center'},
+                    [dcc.Markdown('''US Total Deaths''', style={'font-size':headerSizeMobile,'text-decoration':'underline'}),
+                     html.H1(place_value(totals['deaths'].iloc[0]), style={'font-size':dataSizeMobile})],style={'text-align':'center'},
                 ),
                 html.Td(
-                    [dcc.Markdown('''US New Cases''', style={'font-size':headerSize,'text-decoration':'underline'}),
-                     html.H1(place_value(totals['cases_diff'].iloc[0]), style={'font-size':dataSize})],style={'text-align':'center'},
+                    [dcc.Markdown('''US New Cases''', style={'font-size':headerSizeMobile,'text-decoration':'underline'}),
+                     html.H1(place_value(totals['cases_diff'].iloc[0]), style={'font-size':dataSizeMobile})],style={'text-align':'center'},
                 ),
                 html.Td(
-                    [dcc.Markdown('''US New Deaths''', style={'font-size':headerSize,'text-decoration':'underline'}),
-                     html.H1(place_value(totals['deaths_diff'].iloc[0]), style={'font-size':dataSize})],style={'text-align':'center'},
+                    [dcc.Markdown('''US New Deaths''', style={'font-size':headerSizeMobile,'text-decoration':'underline'}),
+                     html.H1(place_value(totals['deaths_diff'].iloc[0]), style={'font-size':dataSizeMobile})],style={'text-align':'center'},
                 ),
                 html.Td(
-                    [dcc.Markdown('''US Death Rate''', style={'font-size':headerSize,'text-decoration':'underline'}),
-                     html.H1(make_percent(totals['death_rate'].iloc[0]), style={'font-size':dataSize})],style={'text-align':'center'},
+                    [dcc.Markdown('''US Death Rate''', style={'font-size':headerSizeMobile,'text-decoration':'underline'}),
+                     html.H1(make_percent(totals['death_rate'].iloc[0]), style={'font-size':dataSizeMobile})],style={'text-align':'center'},
                 ),
                 #html.Td(
                  #   [dcc.Markdown('''UPDATED''', style={'font-size':headerSize,'text-decoration':'underline'}),
@@ -303,12 +305,12 @@ homeLayoutMobile = html.Div([
                 ,style={'width':'50%'}),
             ]),
             html.Tr([
-                html.Td(dcc.Graph(id='states_indicator_graphic'),style={'vertical-align':'top','width':'50%'})
+                html.Td(dcc.Graph(id='states_indicator_graphic', config={'staticPlot': True}),style={'vertical-align':'top','width':'50%'})
             ]),
             html.Tr([
-                html.Td(dcc.Graph(id='states_indicator_table'),style={'vertical-align':'top','width':'50%'})
+                html.Td(dcc.Graph(id='states_indicator_table', config={'staticPlot': True}),style={'vertical-align':'top','width':'50%'})
             ]),
-        ]),
+        ], style={'font-size':30}),
 
          html.Table([
             html.Tr([
@@ -330,12 +332,12 @@ homeLayoutMobile = html.Div([
                     style = {'width':'50%'})
             ]),
             html.Tr([
-                html.Td(dcc.Graph(id='counties_indicator_graphic'),style={'vertical-align':'top','width':'50%'})
+                html.Td(dcc.Graph(id='counties_indicator_graphic', config={'staticPlot': True}),style={'vertical-align':'top','width':'50%'})
             ]),
             html.Tr([
-                html.Td(dcc.Graph(id='counties_indicator_table'),style={'vertical-align':'top','width':'50%'})
+                html.Td(dcc.Graph(id='counties_indicator_table', config={'staticPlot': True}),style={'vertical-align':'top','width':'50%'})
             ]),
-        ]),
+        ], style={'font-size':30}),
 
          
         html.Div([
@@ -343,7 +345,7 @@ homeLayoutMobile = html.Div([
             Find Your Data
             ''')
         ], style={
-            'font-size': 25,
+            'font-size': 35,
             'text-align': 'center'
         }),
 
@@ -359,8 +361,9 @@ homeLayoutMobile = html.Div([
                 dcc.Input(
                 id='num_states_or_counties',
                 type='number',
-                value = 5
-            )
+                value = 5,
+                style={'width':'100%'}
+            ),style={'width':'25%'}
             ),
 
             html.Td(dcc.Dropdown(
@@ -390,7 +393,7 @@ homeLayoutMobile = html.Div([
             ), style = {'width':'20%'}
             )
             ])
-        ]
+        ], style={'font-size':25}
         ),
 
         
