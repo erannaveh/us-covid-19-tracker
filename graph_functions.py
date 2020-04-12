@@ -1,7 +1,7 @@
 import pandas as pd 
 import pymysql as mysql
 import plotly.graph_objects as go
-from table_functions import getDBConnection, top5StatesList, top5CountiesList, statesSwitcher, countiesSwitcher
+from table_functions import getDBConnection, top5StatesList, top5CountiesList, statesSwitcher, countiesSwitcher, family
 
 
 
@@ -93,7 +93,7 @@ def getStatesGraph(states_selected, deathsOrCasesStates):
                 paper_bgcolor='white',
                 plot_bgcolor='white',
                 font=dict(
-                    family="Courier New, monospace",
+                    family=family,
                     size=16,
                     color="black",
                 )
@@ -157,7 +157,7 @@ def getCountiesGraph(counties_selected, deathsOrCasesCounties):
                 paper_bgcolor='white',
                 plot_bgcolor='white',
                 font=dict(
-                    family="Courier New, monospace",
+                    family=family,
                     size=16,
                     color="black",
                 )

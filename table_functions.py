@@ -31,37 +31,39 @@ ordering_indicator_options = {
     'Counties': [('Cases','cases'),('Deaths','deaths'),('New Cases','cases_diff'),('New Deaths','deaths_diff'),('Death Rate','death_rate'),('% Of State Cases','cases_pct_state'),('% Of State Deaths',('deaths_pct_state')),
     ('% Of Total Cases','cases_pct_total'),('% Of Total Deaths','deaths_pct_total')]
 }
+#family = 'system-ui, -apple-system, BlinkMacSystemFont' #, Segoe UI,Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans,Droid Sans, Helvetica Neue, sans-serif'
+family = 'Futura, system-ui'
 class layout:
     colorscale = [[0,'indianRed'],[.5,'lightgray'],[1,'whitesmoke']]
     headerColor = 'firebrick'
     cellColor = 'whitesmoke'
     headerFont = dict(
-                   family="Courier New, monospace",
+                   family=family,
                     color="white",
-                    size = 22
+                    size = 20
                )
     tableFont = dict(
-                   family="Courier New, monospace",
+                   family=family,
                     color="black",
-                    size = 18
+                    size = 16
                )
     BYOStatesHeaderFont = dict(
-                    family="Courier New, monospace",
+                    family=family,
                     color="white",
                     size = 22
                 )
     BYOStatesTableFont = dict(
-                    family="Courier New, monospace",
+                    family=family,
                     color="black",
                     size = 18
                 )
     BYOCountiesHeaderFont = dict(
-                    family="Courier New, monospace",
+                    family=family,
                         color="white",
                         size = 18
                 )
     BYOCountiesTableFont = dict(
-                    family="Courier New, monospace",
+                    family=family,
                         color="black",
                         size = 15
                 )
@@ -212,7 +214,6 @@ def getTable(df, cellValues, wordCount=1, BYO=False, ordering_indicator='',state
     numRows = df.shape[0]
     fig = go.Figure(
         data=[go.Table(
-            columnwidth = 200,
             header = dict(
                 fill_color = headerColors,
                 values = df.columns,
@@ -224,13 +225,13 @@ def getTable(df, cellValues, wordCount=1, BYO=False, ordering_indicator='',state
                 fill_color=layout.cellColor,
                 align=cellAlignment,
                 font = tableFont,
-                height= wordCount * 30
+                height= wordCount * 35
             ))
         ])
     if(BYO==False):
-        fig.update_layout(autosize=True, margin=go.layout.Margin(l=0, r=0, b=0, t=0, pad=0,autoexpand=True),height=numRows*120)
+        fig.update_layout(autosize=True, margin=go.layout.Margin(l=0, r=0, b=0, t=0, pad=0,autoexpand=True),height=(numRows+1)*75)
     else:
-        fig.update_layout(autosize=True, margin=go.layout.Margin(l=0, r=0, b=0, t=0, pad=0,autoexpand=True))
+        fig.update_layout(autosize=True, margin=go.layout.Margin(l=0, r=0, b=0, t=0, pad=0,autoexpand=True),height=(numRows+1)*50)
     return fig 
 
 top5States = np.array(executeTableSQL(buildYourOwnTableSQL(5,'States','The Nation','Cases'))['state'])
@@ -282,7 +283,7 @@ def getStatesTable(states_selected):
     allStatesDF = prepareStatesDF(allStatesDF)
     wordCount = cleanNames(allStatesDF, 'State')[1]
     cellValues = getCellValues(allStatesDF, 'StatesTableColNames')
-    fig = getTable(allStatesDF, cellValues, wordCount)
+    fig = getTable(allStatesDF, cellValues, wordCount=wordCount)
     return fig
 
 def getCountiesTable(counties_selected):
@@ -293,7 +294,7 @@ def getCountiesTable(counties_selected):
     prepareCountiesDF(allCountiesDF)
     wordCount = cleanNames(allCountiesDF, 'County')[1]
     cellValues = getCellValues(allCountiesDF, 'CountiesTableColNames')
-    fig = getTable(allCountiesDF, cellValues, wordCount)
+    fig = getTable(allCountiesDF, cellValues, wordCount=wordCount)
     return fig
 
 def getBuildYourOwnTable(num_states_or_counties, states_or_counties, location, ordering_indicator):

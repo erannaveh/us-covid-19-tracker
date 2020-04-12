@@ -59,8 +59,8 @@ aboutLayout = html.Div([
     ''', style={'font-size':25}),
        
 ])
-headerSize = 25
-dataSize = 20
+headerSize = 30
+dataSize = 25
 headerSizeMobile = 35
 dataSizeMobile = 30
 homeLayout = html.Div([ 
