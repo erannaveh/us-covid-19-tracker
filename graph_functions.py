@@ -94,7 +94,7 @@ def getStatesGraph(states_selected, deathsOrCasesStates):
                 plot_bgcolor='white',
                 font=dict(
                     family="Courier New, monospace",
-                    size=12,
+                    size=16,
                     color="black",
                 )
             )
@@ -158,7 +158,7 @@ def getCountiesGraph(counties_selected, deathsOrCasesCounties):
                 plot_bgcolor='white',
                 font=dict(
                     family="Courier New, monospace",
-                    size=12,
+                    size=16,
                     color="black",
                 )
             )

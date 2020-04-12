@@ -3,7 +3,7 @@ import dash_core_components as dcc
 import dash_html_components as html
 from dash.dependencies import Input, Output
 from graph_functions import statesSQL, countiesSQL, executeSQL, getStatesGraph, getCountiesGraph
-from table_functions import statesTableSQL, countiesTableSQL, executeTableSQL, getStatesTable, getCountiesTable, getBuildYourOwnTable, place_value, make_percent
+from table_functions import statesTableSQL, countiesTableSQL, executeTableSQL, getStatesTable, getCountiesTable, getBuildYourOwnTable, place_value, make_percent, ordering_indicator_options
 from callbacks import getTotals, getStatesList, getCountiesList
 
 state_indicators = ['Top 5 States','Pacific','Mountain','West North Central','West South Central',
@@ -14,11 +14,7 @@ nationally_or_state_indicator_options ={
     'Counties': ['The Nation'] + state_indicators
 }
 totals = getTotals()
-ordering_indicator_options = {
-    'States': [('Cases','cases'),('Deaths','deaths'),('New Cases','cases_diff'),('New Deaths','deaths_diff'),('Death Rate','death_rate'),('% Of Total Cases','cases_pct_total'),('% Of Total Deaths','deaths_pct_total')],
-    'Counties': [('Cases','cases'),('Deaths','deaths'),('New Cases','cases_diff'),('New Deaths','deaths_diff'),('Death Rate','death_rate'),('% Of State Cases','cases_pct_state'),('% Of State Deaths',('deaths_pct_state')),
-    ('% Of Total Cases','cases_pct_total'),('% Of Total Deaths','deaths_pct_total')]
-}
+
 
 faqLayout = html.Div([
     html.H1('FAQ',
@@ -427,7 +423,7 @@ homeLayoutMobile = html.Div([
         
     
         html.Div([
-                dcc.Graph(id='build_your_own_table')
+                dcc.Graph(id='build_your_own_table', config={'staticPlot': True})
             ], style={'width': '100%', 'display': 'inline-block'}),
 
 ])

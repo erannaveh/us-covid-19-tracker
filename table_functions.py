@@ -22,27 +22,52 @@ columnNames = {
     'StatesTableColNames': ['State','Cases','Deaths','New <br>Cases','New <br>Deaths','Death <br>Rate','% Total <br>Cases', '% Total <br>Deaths'],
     'CountiesTableColNames': ['County','Cases','Deaths','New <br>Cases','New <br>Deaths', 'Death <br>Rate','% State <br>Cases',
                     '% State <br>Deaths'],#, '% Total <br>Cases', '% Total <br>Deaths'],
-    'BYOStatesTableColNames': ['State','Cases','Deaths','New Cases','New Deaths', 'Death Rate', '% Total Cases', '% Total Deaths'],
-    'BYOCountiesTableColNames': ['State','County','Cases','Deaths','New Cases','New Deaths', 'Death Rate','% State Cases',
-                    '% State Deaths', '% Total Cases', '% Total Deaths']
+    'BYOStatesTableColNames': ['State','Cases','Deaths','New <br>Cases','New <br>Deaths','Death <br>Rate','% Total <br>Cases', '% Total <br>Deaths'],
+    'BYOCountiesTableColNames': ['State','County','Cases','Deaths','New <br>Cases','New <br>Deaths', 'Death <br>Rate','% State <br>Cases',
+                    '% State <br>Deaths', '% Total <br>Cases', '% Total <br>Deaths']
 }
-
+ordering_indicator_options = {
+    'States': [('Cases','cases'),('Deaths','deaths'),('New <br>Cases','cases_diff'),('New <br>Deaths','deaths_diff'),('Death <br>Rate','death_rate'),('% Of <br>Total Cases','cases_pct_total'),('% Of <br>Total Deaths','deaths_pct_total')],
+    'Counties': [('Cases','cases'),('Deaths','deaths'),('New Cases','cases_diff'),('New Deaths','deaths_diff'),('Death Rate','death_rate'),('% Of State Cases','cases_pct_state'),('% Of State Deaths',('deaths_pct_state')),
+    ('% Of Total Cases','cases_pct_total'),('% Of Total Deaths','deaths_pct_total')]
+}
 class layout:
     colorscale = [[0,'indianRed'],[.5,'lightgray'],[1,'whitesmoke']]
     headerColor = 'firebrick'
     cellColor = 'whitesmoke'
-    tableFont = dict(
-                   family="Courier New, monospace",
-                    color="black",
-                    size = 15
-               )
     headerFont = dict(
                    family="Courier New, monospace",
                     color="white",
-                    size = 15
+                    size = 22
                )
+    tableFont = dict(
+                   family="Courier New, monospace",
+                    color="black",
+                    size = 18
+               )
+    BYOStatesHeaderFont = dict(
+                    family="Courier New, monospace",
+                    color="white",
+                    size = 22
+                )
+    BYOStatesTableFont = dict(
+                    family="Courier New, monospace",
+                    color="black",
+                    size = 18
+                )
+    BYOCountiesHeaderFont = dict(
+                    family="Courier New, monospace",
+                        color="white",
+                        size = 18
+                )
+    BYOCountiesTableFont = dict(
+                    family="Courier New, monospace",
+                        color="black",
+                        size = 15
+                )
     headerAlignment = 'left'
     cellAlignment = ['left','right']
+    BYOCountiesCellAlignment = ['left','left','right','right','right','right','right','right','right','right','right']
 
 #returns sql command for states based on input
 def statesTableSQL(states):
@@ -74,7 +99,6 @@ def buildYourOwnTableSQL(num_states_or_counties, states_or_counties, location, o
         else:
             whereStatement = "where state='" + location + "'"
     sql = 'select '+str(select)+' from ' + str(states_or_counties) + ' ' + str(whereStatement) + ' order by ' + str(ordering_indicator) + ' desc limit ' + str(num_states_or_counties) + ';'
-    print(sql)
     return sql
 
 
@@ -142,14 +166,14 @@ def prepareCountiesDF(df):
 def prepareBYOTableDF(df, states_or_counties):
     df['Cases']= df['Cases'].apply(place_value)
     df['Deaths']= df['Deaths'].apply(place_value)
-    df['New Cases']= df['New Cases'].apply(place_value)
-    df['New Deaths']= df['New Deaths'].apply(place_value)
-    df['Death Rate']= df['Death Rate'].apply(make_percent)
-    df['% Total Cases']= df['% Total Cases'].apply(make_percent)
-    df['% Total Deaths']= df['% Total Deaths'].apply(make_percent)
+    df['New <br>Cases']= df['New <br>Cases'].apply(place_value)
+    df['New <br>Deaths']= df['New <br>Deaths'].apply(place_value)
+    df['Death <br>Rate']= df['Death <br>Rate'].apply(make_percent)
+    df['% Total <br>Cases']= df['% Total <br>Cases'].apply(make_percent)
+    df['% Total <br>Deaths']= df['% Total <br>Deaths'].apply(make_percent)
     if(states_or_counties == 'Counties'):
-        df['% State Cases']= df['% State Cases'].apply(make_percent)
-        df['% State Deaths']= df['% State Deaths'].apply(make_percent)
+        df['% State <br>Cases']= df['% State <br>Cases'].apply(make_percent)
+        df['% State <br>Deaths']= df['% State <br>Deaths'].apply(make_percent)
     return df
 
 def getCellValues(df, colName):
@@ -158,36 +182,53 @@ def getCellValues(df, colName):
         cellValues.append(df[i])
     return cellValues
 
-def getTable(df, cellValues, wordCount=1, BYO=False, ordering_indicator=''):
-    """ headerColors = []
+def getTable(df, cellValues, wordCount=1, BYO=False, ordering_indicator='',states_or_counties=''):
+    headerColors = []
+    headerFont = 0
+    tableFont = 0
     if(BYO):
-        for column in df.columns:
-            if(column==ordering_indicator):
-                headerColors.append('silver')
+        if(states_or_counties=='States'):
+            headerColors = ['firebrick']
+            columns = ordering_indicator_options['States']
+            headerFont = layout.BYOStatesHeaderFont
+            tableFont = layout.BYOStatesTableFont
+            cellAlignment = layout.cellAlignment
+        else:
+            headerColors = ['firebrick','firebrick']
+            columns = ordering_indicator_options['Counties']
+            headerFont = layout.BYOCountiesHeaderFont
+            tableFont = layout.BYOCountiesTableFont
+            cellAlignment = layout.BYOCountiesCellAlignment
+        for column in columns:
+            if(column[1]==ordering_indicator):
+                headerColors.append('black')
             else:
                 headerColors.append(layout.headerColor)
     else:
-        headerColors = layout.headerColor """
+        headerFont = layout.headerFont
+        tableFont = layout.tableFont
+        headerColors = layout.headerColor
+        cellAlignment = layout.cellAlignment
     numRows = df.shape[0]
     fig = go.Figure(
         data=[go.Table(
             columnwidth = 200,
             header = dict(
-                fill_color = layout.headerColor,
+                fill_color = headerColors,
                 values = df.columns,
                 align=layout.headerAlignment,
-                font = layout.headerFont
+                font = headerFont
             ),
             cells=dict(
                 values = cellValues,
                 fill_color=layout.cellColor,
-                align=layout.cellAlignment,
-                font = layout.tableFont,
-                height= wordCount * 25
+                align=cellAlignment,
+                font = tableFont,
+                height= wordCount * 30
             ))
         ])
     if(BYO==False):
-        fig.update_layout(autosize=True, margin=go.layout.Margin(l=0, r=0, b=0, t=0, pad=0,autoexpand=True),height=numRows*95)
+        fig.update_layout(autosize=True, margin=go.layout.Margin(l=0, r=0, b=0, t=0, pad=0,autoexpand=True),height=numRows*120)
     else:
         fig.update_layout(autosize=True, margin=go.layout.Margin(l=0, r=0, b=0, t=0, pad=0,autoexpand=True))
     return fig 
@@ -268,6 +309,6 @@ def getBuildYourOwnTable(num_states_or_counties, states_or_counties, location, o
     df.columns = columns
     df = prepareBYOTableDF(df, states_or_counties)
     cellValues = getCellValues(df, colNames)
-    fig = getTable(df, cellValues, BYO=True)
+    fig = getTable(df, cellValues, BYO=True, ordering_indicator=ordering_indicator,states_or_counties=states_or_counties)
     return fig
     
