@@ -21,7 +21,7 @@ def getDBConnection():
 columnNames = {
     'StatesTableColNames': ['State','Cases','Deaths','New <br>Cases','New <br>Deaths','Death <br>Rate','% Total <br>Cases', '% Total <br>Deaths'],
     'CountiesTableColNames': ['County','Cases','Deaths','New <br>Cases','New <br>Deaths', 'Death <br>Rate','% State <br>Cases',
-                    '% State <br>Deaths', '% Total <br>Cases', '% Total <br>Deaths'],
+                    '% State <br>Deaths'],#, '% Total <br>Cases', '% Total <br>Deaths'],
     'BYOStatesTableColNames': ['State','Cases','Deaths','New Cases','New Deaths', 'Death Rate', '% Total Cases', '% Total Deaths'],
     'BYOCountiesTableColNames': ['State','County','Cases','Deaths','New Cases','New Deaths', 'Death Rate','% State Cases',
                     '% State Deaths', '% Total Cases', '% Total Deaths']
@@ -33,12 +33,13 @@ class layout:
     cellColor = 'whitesmoke'
     tableFont = dict(
                    family="Courier New, monospace",
-                    color="black"
+                    color="black",
+                    size = 15
                )
     headerFont = dict(
                    family="Courier New, monospace",
                     color="white",
-                    size = 11
+                    size = 15
                )
     headerAlignment = 'left'
     cellAlignment = ['left','right']
@@ -52,7 +53,8 @@ def statesTableSQL(states):
 
 def countiesTableSQL(counties):
     counties = counties.split(',')
-    sql = "select county,cases,deaths,cases_diff,deaths_diff,death_rate,cases_pct_state,deaths_pct_state,cases_pct_total,deaths_pct_total from vi_counties where "
+    #sql = "select county,cases,deaths,cases_diff,deaths_diff,death_rate,cases_pct_state,deaths_pct_state,cases_pct_total,deaths_pct_total from vi_counties where "
+    sql = "select county,cases,deaths,cases_diff,deaths_diff,death_rate,cases_pct_state,deaths_pct_state from vi_counties where "
     for county in counties:
         countyStateList = county.split(':')
         sql += "(state='"+countyStateList[0]+"' and county='"+countyStateList[1]+"') or "
@@ -72,6 +74,7 @@ def buildYourOwnTableSQL(num_states_or_counties, states_or_counties, location, o
         else:
             whereStatement = "where state='" + location + "'"
     sql = 'select '+str(select)+' from ' + str(states_or_counties) + ' ' + str(whereStatement) + ' order by ' + str(ordering_indicator) + ' desc limit ' + str(num_states_or_counties) + ';'
+    print(sql)
     return sql
 
 
@@ -132,8 +135,8 @@ def prepareCountiesDF(df):
     df['Death <br>Rate']= df['Death <br>Rate'].apply(make_percent)
     df['% State <br>Cases']= df['% State <br>Cases'].apply(make_percent)
     df['% State <br>Deaths']= df['% State <br>Deaths'].apply(make_percent)
-    df['% Total <br>Cases']= df['% Total <br>Cases'].apply(make_percent)
-    df['% Total <br>Deaths']= df['% Total <br>Deaths'].apply(make_percent)
+    #df['% Total <br>Cases']= df['% Total <br>Cases'].apply(make_percent)
+    #df['% Total <br>Deaths']= df['% Total <br>Deaths'].apply(make_percent)
     return df
 
 def prepareBYOTableDF(df, states_or_counties):
@@ -184,7 +187,7 @@ def getTable(df, cellValues, wordCount=1, BYO=False, ordering_indicator=''):
             ))
         ])
     if(BYO==False):
-        fig.update_layout(autosize=True, margin=go.layout.Margin(l=0, r=0, b=0, t=0, pad=0,autoexpand=True),height=numRows*80)
+        fig.update_layout(autosize=True, margin=go.layout.Margin(l=0, r=0, b=0, t=0, pad=0,autoexpand=True),height=numRows*95)
     else:
         fig.update_layout(autosize=True, margin=go.layout.Margin(l=0, r=0, b=0, t=0, pad=0,autoexpand=True))
     return fig 

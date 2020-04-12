@@ -16,7 +16,7 @@ nationally_or_state_indicator_options ={
 totals = getTotals()
 ordering_indicator_options = {
     'States': [('Cases','cases'),('Deaths','deaths'),('New Cases','cases_diff'),('New Deaths','deaths_diff'),('Death Rate','death_rate'),('% Of Total Cases','cases_pct_total'),('% Of Total Deaths','deaths_pct_total')],
-    'Counties': [('Cases','cases'),('Deaths','deaths'),('New Cases','cases_diff'),('New Deaths','deaths_diff'),('Death Rate','death_rate'),('% Of State Cases','cases_pct_state'),('% Of State Deaths',('state_pct_total')),
+    'Counties': [('Cases','cases'),('Deaths','deaths'),('New Cases','cases_diff'),('New Deaths','deaths_diff'),('Death Rate','death_rate'),('% Of State Cases','cases_pct_state'),('% Of State Deaths',('deaths_pct_state')),
     ('% Of Total Cases','cases_pct_total'),('% Of Total Deaths','deaths_pct_total')]
 }
 
