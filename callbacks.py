@@ -5,7 +5,7 @@ from table_functions import statesTableSQL, countiesTableSQL, executeTableSQL, g
 from app import app
 
 def getTotals():
-    sql = 'select data_date,cases, deaths, cases_diff, deaths_diff, death_rate from vi_totals;'
+    sql = 'select data_date,cases, deaths, cases_diff, deaths_diff, death_rate from us_totals;'
     df = executeSQL(sql)
     return df
 
@@ -50,9 +50,10 @@ def set_ordering_indicator_options(stateOrNationally):
     [Output('states_indicator_graphic', 'figure'),
      Output('states_indicator_table', 'figure')],
     [Input('states_selected', 'value'),
-     Input('deathsOrCasesStates', 'value')])
-def update_states_graph(states_selected, deathsOrCasesStates):
-    graph = getStatesGraph(states_selected,deathsOrCasesStates)
+     Input('deathsOrCasesStates', 'value'),
+    Input('linearOrLogStates','value')])
+def update_states_graph(states_selected, deathsOrCasesStates, linearOrLog):
+    graph = getStatesGraph(states_selected,deathsOrCasesStates, linearOrLog)
     table = getStatesTable(states_selected)
     return graph, table
 
@@ -61,9 +62,10 @@ def update_states_graph(states_selected, deathsOrCasesStates):
     [Output('counties_indicator_graphic', 'figure'),
      Output('counties_indicator_table', 'figure')],
     [Input('counties_selected', 'value'),
-     Input('deathsOrCasesCounties', 'value')])
-def update_counties_graph(counties_selected, deathsOrCasesCounties):
-    graph = getCountiesGraph(counties_selected, deathsOrCasesCounties)
+     Input('deathsOrCasesCounties', 'value'),
+     Input('linearOrLogCounties','value')])
+def update_counties_graph(counties_selected, deathsOrCasesCounties,linearOrLog):
+    graph = getCountiesGraph(counties_selected, deathsOrCasesCounties, linearOrLog)
     table = getCountiesTable(counties_selected)
     return graph, table
 
@@ -76,3 +78,25 @@ def update_counties_graph(counties_selected, deathsOrCasesCounties):
 def update_build_your_own_table(num_states_or_counties, states_or_counties, location, ordering_indicator):
     table = getBuildYourOwnTable(num_states_or_counties, states_or_counties, location, ordering_indicator)
     return table
+
+@app.callback(
+    Output('adv_selections_list','options'),
+    [Input('adv_states_or_counties','value'),
+    Input('adv_race','value'),
+    Input('adv_gender','value'),
+    Input('adv_age_group','value'),
+    Input('adv_pct_pop','value'),
+    Input('adv_pct','value'),
+    Input('adv_pop','value'),
+    Input('adv_group_name','value'),
+    Input('adv_ordering_indicator','value')])
+def update_advanced_selections_list(states_or_counties,race,gender,age_group,pct_pop,pct,pop,group_name, ordering_indicator):
+    return dcc.Checklist(
+                    id = 'adv_selections_list',
+                    options=[
+                        {'label': 'New York City', 'value': 'NYC'},
+                        {'label': 'Montréal', 'value': 'MTL'},
+                        {'label': 'San Francisco', 'value': 'SF'},
+                    ],
+
+                )

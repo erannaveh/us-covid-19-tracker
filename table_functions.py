@@ -237,6 +237,7 @@ def getTable(df, cellValues, wordCount=1, BYO=False, ordering_indicator='',state
 top5States = np.array(executeTableSQL(buildYourOwnTableSQL(5,'States','The Nation','Cases'))['state'])
 top5StatesList = top5States.tolist()
 statesSwitcher={
+    'US Total': '',
     'Top 5 States': top5StatesList,
     'Pacific': ['Washington','Oregon','California','Alaska','Hawaii'],
     'Mountain': ['Idaho','Montana','Wyoming','Utah','Colorado','Nevada','Arizona','New Mexico'],

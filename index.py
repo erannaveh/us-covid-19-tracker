@@ -2,23 +2,27 @@ import dash_core_components as dcc
 import dash_html_components as html
 from dash.dependencies import Input, Output
 from app import app
-from layouts import homeLayout, faqLayout, aboutLayout, totals, homeLayoutMobile
+from layouts import homeLayout, faqLayout, aboutLayout, totals, homeLayoutMobile, advancedLayout, newLayout
 import callbacks
 from flask import request
 
 
-print(totals['data_date'].iloc[0])
+
 app.layout = html.Div([
     html.Table([
             html.Tr([
                 html.Td([
                     dcc.Markdown('''**uscovid19tracker.info**''',style = {'font-size':30,}),
-                    html.Span('Last Updated: ', style={'font-size':20}),
-                    html.Span(totals['data_date'].iloc[0], style={'font-size':20})
+                    html.Span('Most Recent Data: ', style={'font-size':20}),
+                    html.Span(totals['data_date'].iloc[len(totals['data_date'])-1], style={'font-size':20})
                     ]),
                 html.Td(style={'width':'35%'}),
                 html.Td(
                     dcc.Link('Home',  href='/', style = {'font-size':20}),
+                    style={'vertical-align':'top'}
+                ),
+                html.Td(
+                    dcc.Link('What\'s New',  href='/new', style = {'font-size':20}),
                     style={'vertical-align':'top'}
                 ),
                 html.Td(
@@ -44,9 +48,9 @@ app.layout = html.Div([
 ])
 
 def isMobile():
-    print(request.user_agent.string)
-    print(request.user_agent.platform)
-    print(request.user_agent.browser)
+    #print(request.user_agent.string)
+    #print(request.user_agent.platform)
+    #print(request.user_agent.browser)
 
     return (request.user_agent.platform == 'iphone' or request.user_agent.platform == 'android')
 
@@ -60,10 +64,14 @@ def display_page(pathname):
             layout = homeLayoutMobile
         else:
             layout = homeLayout
+    elif pathname == '/advanced':
+        layout = advancedLayout
     elif pathname == '/faq':
         layout = faqLayout
     elif pathname == '/about':
         layout = aboutLayout
+    elif pathname == '/new':
+        layout = newLayout
     else:
         layout = '404'
     return layout
