@@ -3,7 +3,7 @@ import dash_html_components as html
 from dash.dependencies import Input, Output
 from app import app
 from layouts import homeLayout, faqLayout, aboutLayout, totals, homeLayoutMobile, newLayout
-from advancedLayout import advancedLayout
+#from advancedLayout import advancedLayout
 import callbacks
 from flask import request
 
@@ -66,7 +66,7 @@ def display_page(pathname):
         else:
             layout = homeLayout
     elif pathname == '/advanced':
-        layout = advancedLayout
+        #layout = advancedLayout
     elif pathname == '/faq':
         layout = faqLayout
     elif pathname == '/about':
