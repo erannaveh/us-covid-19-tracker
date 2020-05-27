@@ -98,6 +98,19 @@ aboutLayout = html.Div([
     dcc.Markdown('''
         [Email](mailto:erannaveh@outlook.com) [LinkedIn](https://www.linkedin.com/in/erannaveh) [Instagram](https://www.instagram.com/erannaveh/)
     ''', style={'font-size':25}),       
+    html.H1('\n'),
+    html.H1('\n'),
+    html.H1('\n'),
+    html.H1('\n'),
+    html.Hr(),  
+    dcc.Markdown('''
+        Read about my website here!
+    ''',style={'font-size':30}),
+    dcc.Markdown('''
+        - [University of California Social Media](https://www.facebook.com/universityofcalifornia/posts/10156862587921923)
+        - [UCSB Current](https://www.news.ucsb.edu/2020/019859/tracking-spread)
+        - [SB Independent](https://www.independent.com/2020/04/18/new-coronavirus-app-compares-country-and-counties/)
+    ''',style={'font-size':25}),
     ])
 
 headerSize = 30
