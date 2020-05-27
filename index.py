@@ -67,6 +67,7 @@ def display_page(pathname):
             layout = homeLayout
     elif pathname == '/advanced':
         #layout = advancedLayout
+        layout = homeLayout
     elif pathname == '/faq':
         layout = faqLayout
     elif pathname == '/about':
