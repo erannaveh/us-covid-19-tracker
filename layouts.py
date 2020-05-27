@@ -34,7 +34,7 @@ faqLayout = html.Div([
                     'font-size': 30,
                     'text-decoration':'underline'
                 }),
-    dcc.Markdown('''I update my data daily from the New York Times covid-19-data github repository. Specific details about the data can be found [here](https://github.com/nytimes/covid-19-data).''',style={'font-size':20}),
+    dcc.Markdown('''I update my data daily from the New York Times covid-19-data github repository. Specific details about the data can be found [here](https://github.com/nytimes/covid-19-data). My population data is gathered from the 2018 US census.''',style={'font-size':20}),
     html.H2('Where can I get more information?',
         style = {'width':'100%',
                     'font-size': 30,
@@ -52,7 +52,15 @@ newLayout = html.Div([
                     'text-decoration':'underline'
                 }),
     html.Hr(),
-    html.H2('4/19/2020',
+    html.H2('May 20, 2020',
+        style = {'width':'100%',
+                    'font-size': 30,
+                    'text-decoration':'underline'
+                }),
+    html.P('- Allowed for ascending order in build-your-own-table',style={'font-size':20}),
+    html.P('- Aesthetic touches',style={'font-size':20}),
+    html.Hr(),
+    html.H2('April 19, 2020',
         style = {'width':'100%',
                     'font-size': 30,
                     'text-decoration':'underline'
@@ -62,14 +70,14 @@ newLayout = html.Div([
     html.P('- Added per capita cases/deaths for both states and counties',style={'font-size':20}),
     html.P('- Reorganized layout to make these added features easier to use',style={'font-size':20}),
     html.Hr(),
-    html.H2('4/12/2020',
+    html.H2('April 12, 2020',
         style = {'width':'100%',
                     'font-size': 30,
                     'text-decoration':'underline'
                 }),
     html.P('- Optimized for mobile',style={'font-size':20}),
     html.Hr(),
-    html.H2('4/7/2020',
+    html.H2('April 7, 2020',
         style = {'width':'100%',
                     'font-size': 30,
                     'text-decoration':'underline'
@@ -84,8 +92,9 @@ aboutLayout = html.Div([
                     'text-decoration':'underline'
                 }),
     html.Hr(),
-    dcc.Markdown('''My name is Eran Naveh and I am a student at UCSB passionate about software development.''',style={'font-size':25}),
-    dcc.Markdown('''I'm always updating and improving this site, so feel free to leave any feedback and connect on social media!''',style={'font-size':25}),
+    dcc.Markdown('''My name is Eran Naveh and I am a student at the University of California, Santa Barbara, passionate about software development. After launching this site in early April, I devoted my time sheltered in place to learning more about the trends in COVID-19, constantly improving the functionality of my software.''',style={'font-size':25}),
+    html.H1('\n'),
+    dcc.Markdown('''I'm always looking for ways to update and enhance this site, so please feel free to leave any feedback or connect with me on social media!''',style={'font-size':25}),
     dcc.Markdown('''
         [Email](mailto:erannaveh@outlook.com) [LinkedIn](https://www.linkedin.com/in/erannaveh) [Instagram](https://www.instagram.com/erannaveh/)
     ''', style={'font-size':25}),       
@@ -250,9 +259,12 @@ homeLayout = html.Div([
         html.Table([
             html.Tr([
 
-            html.Td(
-                dcc.Markdown('''Top '''),
-            ), 
+            html.Td(dcc.Dropdown(
+                id='top_or_bottom',
+                options=[{'label': i, 'value': i} for i in ['Top','Bottom']],
+                value='Top'
+            ), style = {'width':'10%'}
+            ),
             
         
             html.Td(
@@ -447,9 +459,12 @@ homeLayoutMobile = html.Div([
         html.Table([
             html.Tr([
 
-            html.Td(
-                dcc.Markdown('''Top '''),
-            ), 
+            html.Td(dcc.Dropdown(
+                id='top_or_bottom',
+                options=[{'label': i, 'value': i} for i in ['Top','Bottom']],
+                value='Top'
+            ), style = {'width':'15%'}
+            ),
             
         
             html.Td(
@@ -498,192 +513,3 @@ homeLayoutMobile = html.Div([
             ], style={'width': '100%', 'display': 'inline-block'}),
     ])
 
-
-advancedLayout = html.Div([
-    html.Table([
-            html.Tr([
-                html.Td(
-                    [dcc.Markdown('''US Total Cases''', style={'font-size':headerSize,'text-decoration':'underline'}),
-                     html.H1(place_value(totals['cases'].iloc[numRows]), style={'font-size':dataSize})],style={'text-align':'center'},
-                ),
-                html.Td(
-                    [dcc.Markdown('''US Total Deaths''', style={'font-size':headerSize,'text-decoration':'underline'}),
-                     html.H1(place_value(totals['deaths'].iloc[numRows]), style={'font-size':dataSize})],style={'text-align':'center'},
-                ),
-                html.Td(
-                    [dcc.Markdown('''US New Cases''', style={'font-size':headerSize,'text-decoration':'underline'}),
-                     html.H1(place_value(totals['cases_diff'].iloc[numRows]), style={'font-size':dataSize})],style={'text-align':'center'},
-                ),
-                html.Td(
-                    [dcc.Markdown('''US New Deaths''', style={'font-size':headerSize,'text-decoration':'underline'}),
-                     html.H1(place_value(totals['deaths_diff'].iloc[numRows]), style={'font-size':dataSize})],style={'text-align':'center'},
-                ),
-                html.Td(
-                    [dcc.Markdown('''US Death Rate''', style={'font-size':headerSize,'text-decoration':'underline'}),
-                     html.H1(make_percent(totals['death_rate'].iloc[numRows]), style={'font-size':dataSize})],style={'text-align':'center'},
-                ),
-                #html.Td(
-                 #   [dcc.Markdown('''UPDATED''', style={'font-size':headerSize,'text-decoration':'underline'}),
-                  #   html.H1(totals['data_date'].iloc[0], style={'font-size':dataSize})],style={'text-align':'center'},
-                #),
-            ]),
-        ], style={'width':'100%'}),
-
-        dcc.Markdown('''Advanced Data Insights''', style={'font-size':headerSize,'text-align':'center'}),
-
-        html.Hr(),
-
-      dcc.Markdown('''Isolate Your Data''', style={'font-size':headerSize,'text-align':'center'}),
-
-        html.Table([
-            html.Tr([
-                html.Td(
-                        dcc.Dropdown(
-                            id='adv_states_or_counties',
-                            options=[{'label': i, 'value': i} for i in ['States','Counties']],
-                            value='States',
-                            multi=False,
-                        )
-                    ),
-                html.Td(
-                    dcc.Dropdown(
-                            id='adv_race',
-                            options=[{'label': i, 'value': i} for i in ['Black','White']],
-                            value='Black',
-                            multi=False,
-                        )
-                    ),
-                html.Td(
-                    dcc.Dropdown(
-                            id='adv_gender',
-                            options=[{'label': i, 'value': i} for i in ['Male','Female']],
-                            value='Male',
-                            multi=True,
-                        )
-                    ),
-                html.Td(
-                    dcc.Dropdown(
-                            id='adv_age_group',
-                            options=[{'label': i, 'value': i} for i in ['0-5','6-10']],
-                            value='0-5',
-                            multi=True,
-                        )
-                    ),
-                html.Td(
-                    dcc.Dropdown(
-                            id='adv_pct_pop',
-                            options=[{'label': i, 'value': i} for i in ['Male','Female']],
-                            value='Male',
-                            multi=False,
-                        )
-                    ),
-                html.Td(
-                    dcc.Input(
-                        id='adv_pct',
-                        type='number',
-                        value = 50
-                        )
-                    ),
-                html.Td(
-                    dcc.Dropdown(
-                            id='adv_pop',
-                            options=[{'label': i, 'value': i} for i in ['0-1,000','1,001-10,000']],
-                            value='Male',
-                            multi=False,
-                        )
-                    ),
-                html.Td(
-                    dcc.Input(
-                            id='adv_group_name',
-                            type='text',
-                        )
-                    ),
-                html.Td(
-                    dcc.Dropdown(
-                            id='adv_ordering_indiciator',
-                            options=[{'label': i, 'value': i} for i in ['Cases','Deaths']],
-                            value='Cases',
-                            multi=False,
-                        )
-                    ),
-            ],style={'width':'100%'}),
-            html.Tr([
-                dcc.Checklist(
-                    id = 'adv_selections_list',
-                    options=[
-                        {'label': 'New York City', 'value': 'NYC'},
-                        {'label': 'Montréal', 'value': 'MTL'},
-                        {'label': 'San Francisco', 'value': 'SF'},
-                    ],
-
-                )
-            ])
-        ],style={'width':'100%'}),
-            
- 
-        dcc.Graph(id='states_indicator_graphic',),
-
-        dcc.Graph(id='states_indicator_table'),
-       # html.Hr(),
-        
-        html.Div([
-            dcc.Markdown('''
-            Find Your Data
-            ''')
-        ], style={
-            'font-size': 25,
-            'text-align': 'center'
-        }),
-
-        html.Table([
-            html.Tr([
-
-            html.Td(
-                dcc.Markdown('''Top '''),
-            ), 
-            
-        
-            html.Td(
-                dcc.Input(
-                id='num_states_or_counties',
-                type='number',
-                value = 5
-            )
-            ),
-
-            html.Td(dcc.Dropdown(
-                id='states_or_counties_indicator',
-                options=[{'label': i, 'value': i} for i in nationally_or_state_indicator_options.keys()],
-                value='States'
-            ), style = {'width':'25%'}
-            ),
-
-            html.Td(
-                dcc.Markdown(''' in ''')
-            ),
-
-            html.Td(dcc.Dropdown(
-                id='nationally_or_state_indicator',
-                value='The Nation'
-            ), style = {'width':'30%'}
-            ),
-            
-            html.Td( 
-                dcc.Markdown('''by ''')
-            ),
-            
-            html.Td(dcc.Dropdown(
-                id='ordering_indicator',
-                value='cases'
-            ), style = {'width':'20%'}
-            )
-            ])
-        ]
-        ),
-
-        
-    
-        html.Div([
-                dcc.Graph(id='build_your_own_table')
-            ], style={'width': '100%', 'display': 'inline-block'}),
-    ])

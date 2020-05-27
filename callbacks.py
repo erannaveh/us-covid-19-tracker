@@ -71,12 +71,13 @@ def update_counties_graph(counties_selected, deathsOrCasesCounties,linearOrLog):
 
 @app.callback(
     Output('build_your_own_table','figure'),
-    [Input('num_states_or_counties','value'),
+    [Input('top_or_bottom','value'),
+    Input('num_states_or_counties','value'),
     Input('states_or_counties_indicator','value'),
     Input('nationally_or_state_indicator','value'),
     Input('ordering_indicator','value')])
-def update_build_your_own_table(num_states_or_counties, states_or_counties, location, ordering_indicator):
-    table = getBuildYourOwnTable(num_states_or_counties, states_or_counties, location, ordering_indicator)
+def update_build_your_own_table(top_or_bottom, num_states_or_counties, states_or_counties, location, ordering_indicator):
+    table = getBuildYourOwnTable(top_or_bottom, num_states_or_counties, states_or_counties, location, ordering_indicator)
     return table
 
 @app.callback(
@@ -91,7 +92,7 @@ def update_build_your_own_table(num_states_or_counties, states_or_counties, loca
     Input('adv_group_name','value'),
     Input('adv_ordering_indicator','value')])
 def update_advanced_selections_list(states_or_counties,race,gender,age_group,pct_pop,pct,pop,group_name, ordering_indicator):
-    return dcc.Checklist(
+    '''return dcc.Checklist(
                     id = 'adv_selections_list',
                     options=[
                         {'label': 'New York City', 'value': 'NYC'},
@@ -99,4 +100,4 @@ def update_advanced_selections_list(states_or_counties,race,gender,age_group,pct
                         {'label': 'San Francisco', 'value': 'SF'},
                     ],
 
-                )
+    '''

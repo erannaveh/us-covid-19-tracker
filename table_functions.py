@@ -87,9 +87,14 @@ def countiesTableSQL(counties):
         sql += "(state='"+countyStateList[0]+"' and county='"+countyStateList[1]+"') or "
     return sql[0:-4]+" order by state, county, data_date;"
 
-def buildYourOwnTableSQL(num_states_or_counties, states_or_counties, location, ordering_indicator):
+def buildYourOwnTableSQL(top_or_bottom, num_states_or_counties, states_or_counties, location, ordering_indicator):
     whereStatement = ''
     select = ''
+    order = ''
+    if(top_or_bottom == 'Top'):
+        order = 'desc'
+    elif(top_or_bottom == 'Bottom'):
+        order = 'asc'
     if(states_or_counties == 'States'):
         states_or_counties = 'vi_states'
         select = 'state,cases,deaths,cases_diff,deaths_diff,death_rate,cases_pct_total,deaths_pct_total'
@@ -100,7 +105,7 @@ def buildYourOwnTableSQL(num_states_or_counties, states_or_counties, location, o
             whereStatement = ''
         else:
             whereStatement = "where state='" + location + "'"
-    sql = 'select '+str(select)+' from ' + str(states_or_counties) + ' ' + str(whereStatement) + ' order by ' + str(ordering_indicator) + ' desc limit ' + str(num_states_or_counties) + ';'
+    sql = 'select '+str(select)+' from ' + str(states_or_counties) + ' ' + str(whereStatement) + ' order by ' + str(ordering_indicator) + ' ' + order +' limit ' + str(num_states_or_counties) + ';'
     return sql
 
 
@@ -234,7 +239,7 @@ def getTable(df, cellValues, wordCount=1, BYO=False, ordering_indicator='',state
         fig.update_layout(autosize=True, margin=go.layout.Margin(l=0, r=0, b=0, t=0, pad=0,autoexpand=True),height=(numRows+1)*50)
     return fig 
 
-top5States = np.array(executeTableSQL(buildYourOwnTableSQL(5,'States','The Nation','Cases'))['state'])
+top5States = np.array(executeTableSQL(buildYourOwnTableSQL('Top',5,'States','The Nation','Cases'))['state'])
 top5StatesList = top5States.tolist()
 statesSwitcher={
     'US Total': '',
@@ -250,7 +255,7 @@ statesSwitcher={
     'South Atlantic': ['West Virginia','Virginia','North Carolina','South Carolina','Georgia','Florida']
 
 }
-top5Counties = (np.array(executeTableSQL(buildYourOwnTableSQL(5,'Counties','The Nation','Cases'))['state'])+":")+np.array(executeTableSQL(buildYourOwnTableSQL(5,'Counties','The Nation','Cases'))['county'])
+top5Counties = (np.array(executeTableSQL(buildYourOwnTableSQL('Top',5,'Counties','The Nation','Cases'))['state'])+":")+np.array(executeTableSQL(buildYourOwnTableSQL('Top',5,'Counties','The Nation','Cases'))['county'])
 top5CountiesList = top5Counties.tolist()
 countiesSwitcher={
     'Top 5 Counties': top5CountiesList,
@@ -298,7 +303,7 @@ def getCountiesTable(counties_selected):
     fig = getTable(allCountiesDF, cellValues, wordCount=wordCount)
     return fig
 
-def getBuildYourOwnTable(num_states_or_counties, states_or_counties, location, ordering_indicator):
+def getBuildYourOwnTable(top_or_bottom, num_states_or_counties, states_or_counties, location, ordering_indicator):
     if(num_states_or_counties==None or num_states_or_counties<1):
         num_states_or_counties = 1
     if(states_or_counties == 'States'):
@@ -306,7 +311,7 @@ def getBuildYourOwnTable(num_states_or_counties, states_or_counties, location, o
     elif(states_or_counties == 'Counties'):
         colNames = 'BYOCountiesTableColNames'
     columns = columnNames[colNames]
-    sql = buildYourOwnTableSQL(num_states_or_counties, states_or_counties, location, ordering_indicator)
+    sql = buildYourOwnTableSQL(top_or_bottom, num_states_or_counties, states_or_counties, location, ordering_indicator)
     df = executeTableSQL(sql)
     df.columns = columns
     df = prepareBYOTableDF(df, states_or_counties)
