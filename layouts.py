@@ -52,6 +52,14 @@ newLayout = html.Div([
                     'text-decoration':'underline'
                 }),
     html.Hr(),
+    html.H2('June 28, 2020',
+        style = {'width':'100%',
+                    'font-size': 30,
+                    'text-decoration':'underline'
+                }),
+    html.P('- Fixed formatting for build-your-own-table on mobile',style={'font-size':20}),
+    html.P('- Added #BLM - CLICK ME button',style={'font-size':20}),
+    html.Hr(),
     html.H2('May 20, 2020',
         style = {'width':'100%',
                     'font-size': 30,
@@ -107,6 +115,7 @@ aboutLayout = html.Div([
         Read about my website here!
     ''',style={'font-size':30}),
     dcc.Markdown('''
+        - [University of California Newsroom](https://www.universityofcalifornia.edu/news/uc-thanks)
         - [University of California Social Media](https://www.facebook.com/universityofcalifornia/posts/10156862587921923)
         - [UCSB Current](https://www.news.ucsb.edu/2020/019859/tracking-spread)
         - [SB Independent](https://www.independent.com/2020/04/18/new-coronavirus-app-compares-country-and-counties/)
@@ -118,6 +127,12 @@ dataSize = 25
 headerSizeMobile = 35
 dataSizeMobile = 30
 homeLayout = html.Div([ 
+
+        dcc.ConfirmDialogProvider(
+            children=html.Div(html.Button('#BLM - CLICK ME', style={'color':'red','font-size':30,'font-family':'Futura, system-ui'}),style={'text-align':'center','margin-top':'1.2em'}),
+            id='popup',
+            message='Black Americans and other POC are disproportionately affected by COVID-19 due to a history of systemic racism in healthcare, housing, and city planning, among many other institutions. I will be donating all future proceeds from this website to organizations that help combat racism in America. I urge you to donate, sign petitions, and safely protest. \n\n #BlackLivesMatter'
+            ),
         html.Table([
             html.Tr([
                 html.Td(
@@ -326,6 +341,11 @@ homeLayout = html.Div([
     ])
 
 homeLayoutMobile = html.Div([
+    dcc.ConfirmDialogProvider(
+            children=html.Div(html.Button('#BLM - CLICK ME', style={'color':'red','font-size':30,'font-family':'Futura, system-ui'}),style={'text-align':'center','margin-top':'1.2em'}),
+            id='popup',
+            message='Black Americans and other POC are disproportionately affected by COVID-19 due to a history of systemic racism in healthcare, housing, and city planning, among many other institutions. I will be donating all future proceeds from this website to organizations that help combat racism in America. I urge you to donate, sign petitions, and safely protest. \n\n #BlackLivesMatter'
+            ),
      html.Table([
             html.Tr([
                 html.Td(
@@ -476,7 +496,7 @@ homeLayoutMobile = html.Div([
                 id='top_or_bottom',
                 options=[{'label': i, 'value': i} for i in ['Top','Bottom']],
                 value='Top'
-            ), style = {'width':'15%'}
+            ), style = {'width':'14%'}
             ),
             
         
@@ -486,37 +506,37 @@ homeLayoutMobile = html.Div([
                 type='number',
                 value = 5,
                 style={'width':'100%'}
-            ),style={'width':'17%'}
+            ),style={'width':'14%'}
             ),
 
             html.Td(dcc.Dropdown(
                 id='states_or_counties_indicator',
                 options=[{'label': i, 'value': i} for i in nationally_or_state_indicator_options.keys()],
                 value='States'
-            ), style = {'width':'25%'}
+            ), style = {'width':'23%'}
             ),
 
             html.Td(
-                dcc.Markdown(''' in ''')
+                dcc.Markdown('''in''')
             ),
 
             html.Td(dcc.Dropdown(
                 id='nationally_or_state_indicator',
                 value='The Nation'
-            ), style = {'width':'30%'}
+            ), style = {'width':'28%'}
             ),
             
             html.Td( 
-                dcc.Markdown('''by ''')
+                dcc.Markdown('''by''')
             ),
             
             html.Td(dcc.Dropdown(
                 id='ordering_indicator',
                 value='cases'
-            ), style = {'width':'28%'}
+            ), style = {'width':'30%'}
             )
             ])
-        ], style={'font-size':22}
+        ], style={'font-size':20}
         ),
 
         
