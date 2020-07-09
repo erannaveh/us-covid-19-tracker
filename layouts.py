@@ -57,8 +57,8 @@ newLayout = html.Div([
                     'font-size': 30,
                     'text-decoration':'underline'
                 }),
-    html.P('- Added New Cases Per Capita and New Deaths Per Capita for both States, Counties, and US',style={'font-size':20}),
-    html.P('- Changed per capita amount for Counties from 1k to 100k',style={'font-size':20}),
+    html.P('- Added New Cases Per Capita and New Deaths Per Capita for States, Counties, and US graphs',style={'font-size':20}),
+    html.P('- Changed per capita amount for Counties graph from 1k to 100k',style={'font-size':20}),
     html.Hr(),
     html.H2('June 28, 2020',
         style = {'width':'100%',
@@ -217,7 +217,7 @@ homeLayout = html.Div([
                             id='deathsOrCasesStates',
                             options=[{'label': i, 'value': i} for i in ['Cases', 'Deaths','New Cases','New Deaths','Cases Per Capita (100k)','Deaths Per Capita (100k)', 'New Cases Per Capita (100k)','New Deaths Per Capita (100k)']],
                             value='Cases',
-                            ),style={'float':'right','width':'30%'}
+                            ),style={'float':'right','width':'30%','font-size':14}
                         ),
                         dcc.RadioItems(
                             id='linearOrLogStates',
@@ -242,7 +242,7 @@ homeLayout = html.Div([
                             id='deathsOrCasesCounties',
                             options=[{'label': i, 'value': i} for i in ['Cases', 'Deaths','New Cases','New Deaths','Cases Per Capita (100k)','Deaths Per Capita (100k)','New Cases Per Capita (100k)','New Deaths Per Capita (100k)']],
                             value='Cases',
-                            ),style={'float':'right','width':'30%'}
+                            ),style={'float':'right','width':'30%','font-size':14}
                         ),
                         dcc.RadioItems(
                             id='linearOrLogCounties',
