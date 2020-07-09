@@ -52,6 +52,14 @@ newLayout = html.Div([
                     'text-decoration':'underline'
                 }),
     html.Hr(),
+    html.H2('July 8, 2020',
+        style = {'width':'100%',
+                    'font-size': 30,
+                    'text-decoration':'underline'
+                }),
+    html.P('- Added New Cases Per Capita and New Deaths Per Capita for both States, Counties, and US',style={'font-size':20}),
+    html.P('- Changed per capita amount for Counties from 1k to 100k',style={'font-size':20}),
+    html.Hr(),
     html.H2('June 28, 2020',
         style = {'width':'100%',
                     'font-size': 30,
@@ -75,7 +83,7 @@ newLayout = html.Div([
                 }),
     html.P('- Added US Total Data under States Graph',style={'font-size':20}),
     html.P('- Added logarithmic scale',style={'font-size':20}),
-    html.P('- Added per capita cases/deaths for both states and counties',style={'font-size':20}),
+    html.P('- Added per capita cases/deaths for both States and Counties',style={'font-size':20}),
     html.P('- Reorganized layout to make these added features easier to use',style={'font-size':20}),
     html.Hr(),
     html.H2('April 12, 2020',
@@ -207,7 +215,7 @@ homeLayout = html.Div([
                         html.Div(
                             dcc.Dropdown(
                             id='deathsOrCasesStates',
-                            options=[{'label': i, 'value': i} for i in ['Cases', 'Deaths','New Cases','New Deaths','Cases Per Capita (100k)','Deaths Per Capita (100k)']],
+                            options=[{'label': i, 'value': i} for i in ['Cases', 'Deaths','New Cases','New Deaths','Cases Per Capita (100k)','Deaths Per Capita (100k)', 'New Cases Per Capita (100k)','New Deaths Per Capita (100k)']],
                             value='Cases',
                             ),style={'float':'right','width':'30%'}
                         ),
@@ -232,7 +240,7 @@ homeLayout = html.Div([
                         html.Div(
                             dcc.Dropdown(
                             id='deathsOrCasesCounties',
-                            options=[{'label': i, 'value': i} for i in ['Cases', 'Deaths','New Cases','New Deaths','Cases Per Capita (1k)','Deaths Per Capita (1k)']],
+                            options=[{'label': i, 'value': i} for i in ['Cases', 'Deaths','New Cases','New Deaths','Cases Per Capita (100k)','Deaths Per Capita (100k)','New Cases Per Capita (100k)','New Deaths Per Capita (100k)']],
                             value='Cases',
                             ),style={'float':'right','width':'30%'}
                         ),
@@ -405,7 +413,7 @@ homeLayoutMobile = html.Div([
                         html.Div(
                             dcc.Dropdown(
                             id='deathsOrCasesStates',
-                            options=[{'label': i, 'value': i} for i in ['Cases', 'Deaths','New Cases','New Deaths','Cases Per Capita (100k)','Deaths Per Capita (100k)']],
+                            options=[{'label': i, 'value': i} for i in ['Cases', 'Deaths','New Cases','New Deaths','Cases Per Capita (100k)','Deaths Per Capita (100k)','New Cases Per Capita (100k)','New Deaths Per Capita (100k)']],
                             value='Cases',
                             ),style={'float':'right','width':'50%'}
                         ),
@@ -456,7 +464,7 @@ homeLayoutMobile = html.Div([
                         html.Div(
                             dcc.Dropdown(
                             id='deathsOrCasesCounties',
-                            options=[{'label': i, 'value': i} for i in ['Cases', 'Deaths','New Cases','New Deaths','Cases Per Capita (1k)','Deaths Per Capita (1k)']],
+                            options=[{'label': i, 'value': i} for i in ['Cases', 'Deaths','New Cases','New Deaths','Cases Per Capita (100k)','Deaths Per Capita (100k)','New Cases Per Capita (100k)','New Deaths Per Capita (100k)']],
                             value='Cases',
                             ),style={'float':'right','width':'50%'}
                         ),

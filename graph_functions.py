@@ -10,6 +10,8 @@ statesGraphSwitcher = {
     'New Deaths': 'deaths_diff',
     'Cases Per Capita (100k)': 'cases_per_100k',
     'Deaths Per Capita (100k)': 'deaths_per_100k',
+    'New Cases Per Capita (100k)': 'cases_diff_per_100k',
+    'New Deaths Per Capita (100k)': 'deaths_diff_per_100k',
 }
 
 countiesGraphSwitcher = {
@@ -17,17 +19,19 @@ countiesGraphSwitcher = {
     'Deaths' : 'deaths',
     'New Cases': 'cases_diff',
     'New Deaths': 'deaths_diff',
-    'Cases Per Capita (1k)': 'cases_per_1k',
-    'Deaths Per Capita (1k)': 'deaths_per_1k',
+    'Cases Per Capita (100k)': 'cases_per_1k',
+    'Deaths Per Capita (100k)': 'deaths_per_1k',
+    'New Cases Per Capita (100k)': 'cases_diff_per_100k',
+    'New Deaths Per Capita (100k)': 'deaths_diff_per_100k',
 }
 
 def nationalDF():
-    sql = 'select data_date,cases,deaths,cases_diff,deaths_diff,cases_per_100k,deaths_per_100k from us_totals order by data_date;'
+    sql = 'select data_date,cases,deaths,cases_diff,deaths_diff,cases_per_100k,deaths_per_100k,cases_diff_per_100k,deaths_diff_per_100k from us_totals order by data_date;'
     df = executeSQL(sql)
     return df
 
 def statesSQL(states):
-    sql = "select data_date,state,cases,deaths,cases_diff,deaths_diff,cases_per_100k,deaths_per_100k from states where state in("
+    sql = "select data_date,state,cases,deaths,cases_diff,deaths_diff,cases_per_100k,deaths_per_100k,cases_diff_per_100k,deaths_diff_per_100k from states where state in("
     states = states.replace(",", "\',\'")
     sql = sql + "'" + states + "') order by state, data_date;"
     return sql
@@ -35,7 +39,7 @@ def statesSQL(states):
 #returns sql command for counties based on input
 def countiesSQL(counties):
     counties = counties.split(',')
-    sql = "select data_date,state,county,cases,deaths,cases_diff,deaths_diff,cases_per_1k,deaths_per_1k from counties where "
+    sql = "select data_date,state,county,cases,deaths,cases_diff,deaths_diff,cases_per_1k,deaths_per_1k,cases_diff_per_100k,deaths_diff_per_100k from counties where "
     for county in counties:
         countyStateList = county.split(':')
         sql += "(state='"+countyStateList[0]+"' and county='"+countyStateList[1]+"') or "
