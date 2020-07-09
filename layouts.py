@@ -215,7 +215,7 @@ homeLayout = html.Div([
                         html.Div(
                             dcc.Dropdown(
                             id='deathsOrCasesStates',
-                            options=[{'label': i, 'value': i} for i in ['Cases', 'Deaths','New Cases','New Deaths','Cases Per Capita (100k)','Deaths Per Capita (100k)', 'New Cases Per Capita (100k)','New Deaths Per Capita (100k)']],
+                            options=[{'label': i, 'value': i} for i in ['Cases', 'Deaths','New Cases','New Deaths','Cases/Capita (100k)','Deaths/Capita (100k)', 'New Cases/Capita (100k)','New Deaths/Capita (100k)']],
                             value='Cases',
                             ),style={'float':'right','width':'30%','font-size':14}
                         ),
@@ -240,7 +240,7 @@ homeLayout = html.Div([
                         html.Div(
                             dcc.Dropdown(
                             id='deathsOrCasesCounties',
-                            options=[{'label': i, 'value': i} for i in ['Cases', 'Deaths','New Cases','New Deaths','Cases Per Capita (100k)','Deaths Per Capita (100k)','New Cases Per Capita (100k)','New Deaths Per Capita (100k)']],
+                            options=[{'label': i, 'value': i} for i in ['Cases', 'Deaths','New Cases','New Deaths','Cases/Capita (100k)','Deaths/Capita (100k)','New Cases/Capita (100k)','New Deaths/Capita (100k)']],
                             value='Cases',
                             ),style={'float':'right','width':'30%','font-size':14}
                         ),
@@ -413,7 +413,7 @@ homeLayoutMobile = html.Div([
                         html.Div(
                             dcc.Dropdown(
                             id='deathsOrCasesStates',
-                            options=[{'label': i, 'value': i} for i in ['Cases', 'Deaths','New Cases','New Deaths','Cases Per Capita (100k)','Deaths Per Capita (100k)','New Cases Per Capita (100k)','New Deaths Per Capita (100k)']],
+                            options=[{'label': i, 'value': i} for i in ['Cases', 'Deaths','New Cases','New Deaths','Cases/Capita (100k)','Deaths/Capita (100k)','New Cases/Capita (100k)','New Deaths/Capita (100k)']],
                             value='Cases',
                             ),style={'float':'right','width':'50%'}
                         ),
@@ -464,7 +464,7 @@ homeLayoutMobile = html.Div([
                         html.Div(
                             dcc.Dropdown(
                             id='deathsOrCasesCounties',
-                            options=[{'label': i, 'value': i} for i in ['Cases', 'Deaths','New Cases','New Deaths','Cases Per Capita (100k)','Deaths Per Capita (100k)','New Cases Per Capita (100k)','New Deaths Per Capita (100k)']],
+                            options=[{'label': i, 'value': i} for i in ['Cases', 'Deaths','New Cases','New Deaths','Cases/Capita (100k)','Deaths/Capita (100k)','New Cases/Capita (100k)','New Deaths/Capita (100k)']],
                             value='Cases',
                             ),style={'float':'right','width':'50%'}
                         ),

@@ -8,10 +8,10 @@ statesGraphSwitcher = {
     'Deaths' : 'deaths',
     'New Cases': 'cases_diff',
     'New Deaths': 'deaths_diff',
-    'Cases Per Capita (100k)': 'cases_per_100k',
-    'Deaths Per Capita (100k)': 'deaths_per_100k',
-    'New Cases Per Capita (100k)': 'cases_diff_per_100k',
-    'New Deaths Per Capita (100k)': 'deaths_diff_per_100k',
+    'Cases/Capita (100k)': 'cases_per_100k',
+    'Deaths/Capita (100k)': 'deaths_per_100k',
+    'New Cases/Capita (100k)': 'cases_diff_per_100k',
+    'New Deaths/Capita (100k)': 'deaths_diff_per_100k',
 }
 
 countiesGraphSwitcher = {
@@ -19,10 +19,10 @@ countiesGraphSwitcher = {
     'Deaths' : 'deaths',
     'New Cases': 'cases_diff',
     'New Deaths': 'deaths_diff',
-    'Cases Per Capita (100k)': 'cases_per_1k',
-    'Deaths Per Capita (100k)': 'deaths_per_1k',
-    'New Cases Per Capita (100k)': 'cases_diff_per_100k',
-    'New Deaths Per Capita (100k)': 'deaths_diff_per_100k',
+    'Cases/Capita (100k)': 'cases_per_1k',
+    'Deaths/Capita (100k)': 'deaths_per_1k',
+    'New Cases/Capita (100k)': 'cases_diff_per_100k',
+    'New Deaths/Capita (100k)': 'deaths_diff_per_100k',
 }
 
 def nationalDF():
