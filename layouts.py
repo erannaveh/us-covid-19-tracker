@@ -224,6 +224,7 @@ homeLayout = html.Div([
                             id='deathsOrCasesStates',
                             options=[{'label': i, 'value': i} for i in ['Cases', 'Deaths','New Cases','New Deaths','Cases/Capita (100k)','Deaths/Capita (100k)', 'New Cases/Capita (100k)','New Deaths/Capita (100k)']],
                             value='Cases',
+                            clearable=False
                             ),style={'float':'right','width':'30%','font-size':14}
                         ),
                         dcc.RadioItems(
@@ -249,6 +250,7 @@ homeLayout = html.Div([
                             id='deathsOrCasesCounties',
                             options=[{'label': i, 'value': i} for i in ['Cases', 'Deaths','New Cases','New Deaths','Cases/Capita (100k)','Deaths/Capita (100k)','New Cases/Capita (100k)','New Deaths/Capita (100k)']],
                             value='Cases',
+                            clearable=False
                             ),style={'float':'right','width':'30%','font-size':14}
                         ),
                         dcc.RadioItems(
@@ -305,7 +307,8 @@ homeLayout = html.Div([
             html.Td(dcc.Dropdown(
                 id='top_or_bottom',
                 options=[{'label': i, 'value': i} for i in ['Top','Bottom']],
-                value='Top'
+                value='Top',
+                clearable=False
             ), style = {'width':'10%'}
             ),
             
@@ -321,7 +324,8 @@ homeLayout = html.Div([
             html.Td(dcc.Dropdown(
                 id='states_or_counties_indicator',
                 options=[{'label': i, 'value': i} for i in nationally_or_state_indicator_options.keys()],
-                value='States'
+                value='States',
+                clearable=False
             ), style = {'width':'25%'}
             ),
 
@@ -331,7 +335,8 @@ homeLayout = html.Div([
 
             html.Td(dcc.Dropdown(
                 id='nationally_or_state_indicator',
-                value='The Nation'
+                value='The Nation',
+                clearable=False
             ), style = {'width':'30%'}
             ),
             
@@ -341,7 +346,8 @@ homeLayout = html.Div([
             
             html.Td(dcc.Dropdown(
                 id='ordering_indicator',
-                value='cases'
+                value='cases',
+                clearable=False
             ), style = {'width':'20%'}
             )
             ])
@@ -422,6 +428,7 @@ homeLayoutMobile = html.Div([
                             id='deathsOrCasesStates',
                             options=[{'label': i, 'value': i} for i in ['Cases', 'Deaths','New Cases','New Deaths','Cases/Capita (100k)','Deaths/Capita (100k)','New Cases/Capita (100k)','New Deaths/Capita (100k)']],
                             value='Cases',
+                            clearable=False
                             ),style={'float':'right','width':'50%'}
                         ),
                     ])
@@ -473,6 +480,7 @@ homeLayoutMobile = html.Div([
                             id='deathsOrCasesCounties',
                             options=[{'label': i, 'value': i} for i in ['Cases', 'Deaths','New Cases','New Deaths','Cases/Capita (100k)','Deaths/Capita (100k)','New Cases/Capita (100k)','New Deaths/Capita (100k)']],
                             value='Cases',
+                            clearable=False
                             ),style={'float':'right','width':'50%'}
                         ),
                     ])
@@ -510,7 +518,8 @@ homeLayoutMobile = html.Div([
             html.Td(dcc.Dropdown(
                 id='top_or_bottom',
                 options=[{'label': i, 'value': i} for i in ['Top','Bottom']],
-                value='Top'
+                value='Top',
+                clearable=False
             ), style = {'width':'14%'}
             ),
             
@@ -527,7 +536,8 @@ homeLayoutMobile = html.Div([
             html.Td(dcc.Dropdown(
                 id='states_or_counties_indicator',
                 options=[{'label': i, 'value': i} for i in nationally_or_state_indicator_options.keys()],
-                value='States'
+                value='States',
+                clearable=False
             ), style = {'width':'23%'}
             ),
 
@@ -537,7 +547,8 @@ homeLayoutMobile = html.Div([
 
             html.Td(dcc.Dropdown(
                 id='nationally_or_state_indicator',
-                value='The Nation'
+                value='The Nation',
+                clearable=False
             ), style = {'width':'28%'}
             ),
             
@@ -547,7 +558,8 @@ homeLayoutMobile = html.Div([
             
             html.Td(dcc.Dropdown(
                 id='ordering_indicator',
-                value='cases'
+                value='cases',
+                clearable=False
             ), style = {'width':'30%'}
             )
             ])
@@ -570,6 +582,16 @@ classesLayout = html.Div([
     
     html.Hr(),
 
+    html.H1('Find Your Class', 
+        style={
+            'width':'100%',
+            'font-size':30,
+            'vertical-align':'center',
+            'text-align':'center'
+    }),
+
+    html.Hr(),
+
     html.Table(
         html.Tr([
             html.Td(
@@ -577,19 +599,21 @@ classesLayout = html.Div([
                     id='onlineOrInPerson',
                     options=[{'label': i, 'value': i} for i in ['In Person', 'Hybrid','Online']],
                     value='In Person',
-                    multi=False
-                ),
+                    multi=True,
+                    clearable=False
+                ),style={'width':'50%'}
             ),
             html.Td(
                 dcc.Dropdown(
                     id='undergradOrGrad',
                     options=[{'label': i, 'value': i} for i in ['Undergrad', 'Grad']],
                     value='Undergrad',
-                    multi=False
-                ),
+                    multi=True,
+                    clearable=False
+                ),style={'width':'50%'}
             ),
         ]),
-        style={'width':'100%','rules':'none'}
+        style={'width':'100%'}
     ),
     
 
@@ -597,7 +621,8 @@ classesLayout = html.Div([
         id='course',
         options=[{'label': i, 'value': i} for i in getClassesList('In Person','Undergrad')],
         value='CHEM      6BL',
-        multi=False
+        multi=False,
+        clearable=False
     ),
     html.Hr(),
     html.H1(id='class_title'),
