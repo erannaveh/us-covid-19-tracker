@@ -52,6 +52,13 @@ newLayout = html.Div([
                     'text-decoration':'underline'
                 }),
     html.Hr(),
+    html.H2('July 10, 2020',
+        style = {'width':'100%',
+                    'font-size': 30,
+                    'text-decoration':'underline'
+                }),
+    html.P('- Added "Classes" section, allowing users to check which UCSB classes are in-person, online, or hybrid. Intended to help international students find in-person courses and for non-international students to see if they can give up their spot in any courses, due to new ICE regulations.',style={'font-size':20}),
+    html.Hr(),
     html.H2('July 8, 2020',
         style = {'width':'100%',
                     'font-size': 30,
