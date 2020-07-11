@@ -1,6 +1,8 @@
 from dash.dependencies import Input, Output
 from graph_functions import statesSQL, countiesSQL, executeSQL, getStatesGraph, getCountiesGraph
 from table_functions import statesTableSQL, countiesTableSQL, executeTableSQL, getStatesTable, getCountiesTable, getBuildYourOwnTable, place_value
+from class_functions import getCourseIdandTitle, getDays, getDescription, getEnrollCode, getTime
+from collections import OrderedDict
 
 from app import app
 
@@ -18,6 +20,25 @@ def getCountiesList():
     sql = 'select state,county from vi_counties;'
     df = executeSQL(sql)
     return (df['state'] + ":" + df['county']).tolist()
+
+onlineOrInPersonSwitcher = {
+    'In Person':"'IP'",
+    'Hybrid':"'H'",
+    'Online': "'OL'"
+}
+
+undergradOrGradSwitcher = {
+    'Undergrad' : "'U'",
+    'Grad' : "'G'"
+}
+
+def getClassesList(onlineOrInPerson, undergradOrGrad):
+    sql = 'select enrollCode, courseId from classes where online='+onlineOrInPersonSwitcher[onlineOrInPerson]+' and level='+undergradOrGradSwitcher[undergradOrGrad]+';'
+    df = executeSQL(sql)
+    keys = (df['courseId']).tolist()
+    values = (df['enrollCode']).tolist()
+    #return dict(zip(keys,values))
+    return keys
 
 state_indicators = getStatesList()
 county_indicators = getCountiesList()
@@ -101,3 +122,48 @@ def update_advanced_selections_list(states_or_counties,race,gender,age_group,pct
                     ],
 
     '''
+
+
+@app.callback(
+    Output('course','options'),
+    [Input('onlineOrInPerson','value'),
+    Input('undergradOrGrad','value')])
+def update_class_list(onlineOrInPerson, undergradOrGrad):
+    classes = getClassesList(onlineOrInPerson, undergradOrGrad)
+    return [{'label': i, 'value': i} for i in list(OrderedDict.fromkeys(classes)) ]
+
+@app.callback(
+    Output('class_title','children'),
+    [Input('course','value')])
+def update_courseId_title(course):
+    courseId_title = getCourseIdandTitle("'"+course+"'")
+    return courseId_title
+
+@app.callback(
+    Output('class_description','children'),
+    [Input('course','value')])
+def update_description(course):
+    description = getDescription("'"+course+"'")
+    return description
+
+@app.callback(
+    Output('class_code','children'),
+    [Input('course','value')])
+def update_enrollCode(course):
+    enrollCode = 'Enrollment Code: \n' + getEnrollCode("'"+course+"'")
+    return enrollCode
+
+@app.callback(
+    Output('class_days','children'),
+    [Input('course','value')])
+def update_days(course):
+    days = 'Days: \n' + getDays("'"+course+"'")
+    return days
+
+@app.callback(
+    Output('class_time','children'),
+    [Input('course','value')])
+def update_time(course):
+    time = 'Time: \n' + getTime("'"+course+"'")
+    return time
+

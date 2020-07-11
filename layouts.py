@@ -4,7 +4,7 @@ import dash_html_components as html
 from dash.dependencies import Input, Output
 from graph_functions import statesSQL, countiesSQL, executeSQL, getStatesGraph, getCountiesGraph
 from table_functions import statesTableSQL, countiesTableSQL, executeTableSQL, getStatesTable, getCountiesTable, getBuildYourOwnTable, place_value, make_percent, ordering_indicator_options
-from callbacks import getTotals, getStatesList, getCountiesList
+from callbacks import getTotals, getStatesList, getCountiesList, getClassesList
 
 state_indicators = ['US Total','Top 5 States','Pacific','Mountain','West North Central','West South Central',
                     'East North Central','East South Central','New England','Mid Atlantic','South Atlantic']+getStatesList()
@@ -554,3 +554,40 @@ homeLayoutMobile = html.Div([
             ], style={'width': '100%', 'display': 'inline-block'}),
     ])
 
+classesLayout = html.Div([
+    dcc.ConfirmDialogProvider(
+            children=html.Div(html.Button('INFO - CLICK ME', style={'color':'red','font-size':30,'font-family':'Futura, system-ui'}),style={'text-align':'center','margin-top':'1.2em'}),
+            id='popup',
+            message='This service is meant to help international students find an in-person or hybrid class so that they can stay in the US. If you are not an international student and you are in an in-person or hybrid class, consider giving your spot to an international student who needs it. \n\nI populate my class data from the UCSB GOLD API, using the guidelines found on the front page of GOLD to determine whether or not a given class is in-person, online, or hybrid. These lists are generated automatically based on these guidelines, so there may be mistakes as administration continues inputting data on these classes. Things are constantly changing so please make sure to double check on GOLD and with faculty if you think your class may be in-person. I update my class data every day.'
+            ),
+    dcc.Dropdown(
+        id='onlineOrInPerson',
+        options=[{'label': i, 'value': i} for i in ['In Person', 'Hybrid','Online']],
+        value='In Person',
+        multi=False,
+        style={'width':'50%'}
+    ),
+    dcc.Dropdown(
+        id='undergradOrGrad',
+        options=[{'label': i, 'value': i} for i in ['Undergrad', 'Grad']],
+        value='Undergrad',
+        multi=False,
+        style={'width':'50%'}
+    ),
+    dcc.Dropdown(
+        id='course',
+        options=[{'label': i, 'value': i} for i in getClassesList('In Person','Undergrad')],
+        value='CHEM      6BL',
+        multi=False,
+        style={'width':'50%'}
+    ),
+    html.H1(children='Course ID - Full Title',id='class_title'),
+    html.H2(children='Description',id='class_description'),
+    html.Table([
+        html.Tr([
+            html.Td(children='Enrollment Code',id='class_code',style={'white-space':'pre-wrap'}),
+            html.Td(children='Days',id='class_days',style={'white-space':'pre-wrap'}),
+            html.Td(children='Time',id='class_time',style={'white-space':'pre-wrap'}),
+        ]),
+    ],style={'width':'100%','font-size':20})
+])
