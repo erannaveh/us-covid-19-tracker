@@ -2,7 +2,7 @@ import dash_core_components as dcc
 import dash_html_components as html
 from dash.dependencies import Input, Output
 from app import app
-from layouts import homeLayout, faqLayout, aboutLayout, totals, homeLayoutMobile, newLayout
+from layouts import homeLayout, faqLayout, aboutLayout, totals, homeLayoutMobile, newLayout, classesLayout
 #from advancedLayout import advancedLayout
 import callbacks
 from flask import request
@@ -74,6 +74,8 @@ def display_page(pathname):
         layout = aboutLayout
     elif pathname == '/new':
         layout = newLayout
+    elif pathname == '/classes':
+        layout = classesLayout
     else:
         layout = '404'
     return layout
