@@ -556,38 +556,53 @@ homeLayoutMobile = html.Div([
 
 classesLayout = html.Div([
     dcc.ConfirmDialogProvider(
-            children=html.Div(html.Button('INFO - CLICK ME', style={'color':'red','font-size':30,'font-family':'Futura, system-ui'}),style={'text-align':'center','margin-top':'1.2em'}),
-            id='popup',
-            message='This service is meant to help international students find an in-person or hybrid class so that they can stay in the US. If you are not an international student and you are in an in-person or hybrid class, consider giving your spot to an international student who needs it. \n\nI populate my class data from the UCSB GOLD API, using the guidelines found on the front page of GOLD to determine whether or not a given class is in-person, online, or hybrid. These lists are generated automatically based on these guidelines, so there may be mistakes as administration continues inputting data on these classes. Things are constantly changing so please make sure to double check on GOLD and with faculty if you think your class may be in-person. I update my class data every day.'
+        children=html.Div(html.Button('INFO - CLICK ME', style={'color':'red','font-size':30,'font-family':'Futura, system-ui'}),style={'text-align':'center','margin-top':'1.2em'}),
+        id='popup',
+        message='This service is meant to help international students find an in-person or hybrid class so that they can stay in the US. If you are not an international student and you are in an in-person or hybrid class, consider giving your spot to an international student who needs it. \n\nI populate my class data from the UCSB GOLD API, using the guidelines found on the front page of GOLD to determine whether or not a given class is in-person, online, or hybrid. These lists are generated automatically based on these guidelines, so there may be mistakes as administration continues inputting data on classes. Things are constantly changing so please make sure to double check on GOLD and with faculty if you think your class may be in-person. I update my class data every day.'
+    ),
+    
+    html.Hr(),
+
+    html.Table(
+        html.Tr([
+            html.Td(
+                dcc.Dropdown(
+                    id='onlineOrInPerson',
+                    options=[{'label': i, 'value': i} for i in ['In Person', 'Hybrid','Online']],
+                    value='In Person',
+                    multi=False
+                ),
             ),
-    dcc.Dropdown(
-        id='onlineOrInPerson',
-        options=[{'label': i, 'value': i} for i in ['In Person', 'Hybrid','Online']],
-        value='In Person',
-        multi=False,
-        style={'width':'50%'}
+            html.Td(
+                dcc.Dropdown(
+                    id='undergradOrGrad',
+                    options=[{'label': i, 'value': i} for i in ['Undergrad', 'Grad']],
+                    value='Undergrad',
+                    multi=False
+                ),
+            ),
+        ]),
+        style={'width':'100%','rules':'none'}
     ),
-    dcc.Dropdown(
-        id='undergradOrGrad',
-        options=[{'label': i, 'value': i} for i in ['Undergrad', 'Grad']],
-        value='Undergrad',
-        multi=False,
-        style={'width':'50%'}
-    ),
+    
+
     dcc.Dropdown(
         id='course',
         options=[{'label': i, 'value': i} for i in getClassesList('In Person','Undergrad')],
         value='CHEM      6BL',
-        multi=False,
-        style={'width':'50%'}
+        multi=False
     ),
-    html.H1(children='Course ID - Full Title',id='class_title'),
-    html.H2(children='Description',id='class_description'),
+    html.Hr(),
+    html.H1(id='class_title'),
+    html.Hr(),
+    html.H2(id='class_description'),
     html.Table([
         html.Tr([
-            html.Td(children='Enrollment Code',id='class_code',style={'white-space':'pre-wrap'}),
-            html.Td(children='Days',id='class_days',style={'white-space':'pre-wrap'}),
-            html.Td(children='Time',id='class_time',style={'white-space':'pre-wrap'}),
+            html.Td(id='class_code',style={'white-space':'pre-wrap'}),
+            html.Td(id='class_days',style={'white-space':'pre-wrap'}),
+            html.Td(id='class_time',style={'white-space':'pre-wrap'}),
         ]),
-    ],style={'width':'100%','font-size':20})
+    ],style={'width':'100%','font-size':20}),
+
+    html.Hr()
 ])

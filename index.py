@@ -23,6 +23,10 @@ app.layout = html.Div([
                     style={'vertical-align':'top'}
                 ),
                 html.Td(
+                    dcc.Link('Classes',  href='/classes', style = {'font-size':20}),
+                    style={'vertical-align':'top'}
+                ),
+                html.Td(
                     dcc.Link('What\'s New',  href='/new', style = {'font-size':20}),
                     style={'vertical-align':'top'}
                 ),
