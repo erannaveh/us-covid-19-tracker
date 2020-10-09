@@ -1,7 +1,6 @@
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
-import dash_bootstrap_components as dbc
 from dash.dependencies import Input, Output
 from graph_functions import statesSQL, countiesSQL, executeSQL, getStatesGraph, getCountiesGraph
 from table_functions import statesTableSQL, countiesTableSQL, executeTableSQL, getStatesTable, getCountiesTable, getBuildYourOwnTable, place_value, make_percent, ordering_indicator_options
