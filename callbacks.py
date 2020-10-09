@@ -3,6 +3,8 @@ from graph_functions import statesSQL, countiesSQL, executeSQL, getStatesGraph, 
 from table_functions import statesTableSQL, countiesTableSQL, executeTableSQL, getStatesTable, getCountiesTable, getBuildYourOwnTable, place_value
 from class_functions import getData
 from collections import OrderedDict
+import dash_html_components as html
+
 
 from app import app
 
@@ -179,3 +181,53 @@ def update_time(course):
     time = 'Time: \n' + getData("'"+course+"'",'time')
     return time
 
+@app.callback(
+    Output('webchat','children'),
+    [Input('open_chat','n_clicks')]
+)
+def show_chat(n_clicks):
+    if n_clicks == None:
+        return
+    if n_clicks%2==1:
+        return html.Iframe(
+                    id="chat",
+                    src='https://webchat.botframework.com/embed/covid19botservice?s=CLWPBN3CGzs.MCx684Yoqzp4ULuhC5KCTwYyDa9lo2nor0b0RwDW4fY',  
+                    style={
+                        'float':'right',
+                        'position': 'fixed',
+                        'bottom': '0',
+                        'right': '0',
+                        'height': '40%',
+                        'width': '20%',
+                        'display': 'flex',
+                        'z-index': '2'
+                    }
+                )
+
+@app.callback(
+    Output('open_chat','children'),
+    [Input('open_chat','n_clicks')]
+)
+def toggle_button(n_clicks):
+    if n_clicks==None or n_clicks%2==0:
+        return html.Button("CHAT",
+                            style={
+                                'float':'right',
+                                'position': 'fixed',
+                                'bottom': '0',
+                                'right': '0',
+                                'display': 'block',
+                                'z-index': '2',
+                                'margin':'2%'
+                            },
+                            n_clicks=0
+                        ),
+    else:
+        return html.Button("X",
+                            style={
+                                'position': 'relative',
+                                'display':'block',
+                                'z-index':'3'
+                            },
+                            n_clicks=0
+                        ),
