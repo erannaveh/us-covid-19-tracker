@@ -10,7 +10,7 @@ from flask import request
 
 
 app.layout = html.Div([
-    html.Ul(style={
+    """html.Ul(style={
                         'float':'right',
                         'position': 'fixed',
                         'bottom': '0',
@@ -30,7 +30,7 @@ app.layout = html.Div([
                         html.Div(id="webchat",children=[
                          ]),   
                     )
-        ]),
+        ]),"""
     html.Table([
             html.Tr([
                 html.Td([
