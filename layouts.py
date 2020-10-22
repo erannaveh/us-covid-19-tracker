@@ -52,13 +52,6 @@ newLayout = html.Div([
                     'text-decoration':'underline'
                 }),
     html.Hr(),
-    html.H2('October 10, 2020',
-        style = {'width':'100%',
-                    'font-size': 30,
-                    'text-decoration':'underline'
-                }),
-    html.P('- Added chat bot with help from Arjun Gathwala, an AI tool that allows users to ask COVID-related questions with responses compiled from WHO data and other reputable sources.',style={'font-size':20}),
-    html.Hr(),
     html.H2('July 10, 2020',
         style = {'width':'100%',
                     'font-size': 30,
@@ -148,7 +141,8 @@ headerSize = 30
 dataSize = 25
 headerSizeMobile = 35
 dataSizeMobile = 30
-homeLayout = html.Div([
+homeLayout = html.Div([ 
+
         dcc.ConfirmDialogProvider(
             children=html.Div(html.Button('#BLM - CLICK ME', style={'color':'red','font-size':30,'font-family':'Futura, system-ui'}),style={'text-align':'center','margin-top':'1.2em'}),
             id='popup',
