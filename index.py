@@ -10,27 +10,6 @@ from flask import request
 
 
 app.layout = html.Div([
-    """html.Ul(style={
-                        'float':'right',
-                        'position': 'fixed',
-                        'bottom': '0',
-                        'right': '0',
-                        'height':'45%',
-                        'width': '20%',
-                        'display': 'block',
-                        'z-index': '2',
-                        'list-style':'none'
-                    },
-                children=[
-                    html.Li(
-                        html.Div(id="open_chat",children=[
-                        ]),
-                    ),
-                    html.Li(
-                        html.Div(id="webchat",children=[
-                         ]),   
-                    )
-        ]),"""
     html.Table([
             html.Tr([
                 html.Td([
