@@ -11,6 +11,7 @@ print('****** start')
 
 #external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 app = dash.Dash(__name__)
+app.title = "US COVID-19 Tracker"
 server = app.server
 app.config.suppress_callback_exceptions = True
 
