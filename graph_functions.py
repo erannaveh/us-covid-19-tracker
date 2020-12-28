@@ -12,6 +12,8 @@ statesGraphSwitcher = {
     'Deaths/Capita (100k)': 'deaths_per_100k',
     'New Cases/Capita (100k)': 'cases_diff_per_100k',
     'New Deaths/Capita (100k)': 'deaths_diff_per_100k',
+    'New Cases Growth %': 'cases_diff_pct', 
+    'New Deaths Growth %': 'deaths_diff_pct'
 }
 
 countiesGraphSwitcher = {
@@ -23,27 +25,29 @@ countiesGraphSwitcher = {
     'Deaths/Capita (100k)': 'deaths_per_1k',
     'New Cases/Capita (100k)': 'cases_diff_per_100k',
     'New Deaths/Capita (100k)': 'deaths_diff_per_100k',
+    'Daily Case Growth %': 'cases_diff_pct', 
+    'Daily Death Growth %': 'deaths_diff_pct'
 }
 
-def nationalDF():
-    sql = 'select data_date,cases,deaths,cases_diff,deaths_diff,cases_per_100k,deaths_per_100k,cases_diff_per_100k,deaths_diff_per_100k from us_totals order by data_date;'
+def nationalDF(startDate, endDate):
+    sql = 'select data_date,cases,deaths,cases_diff,deaths_diff,cases_per_100k,deaths_per_100k,cases_diff_per_100k,deaths_diff_per_100k,cases_diff_pct,deaths_diff_pct from us_totals where data_date >= "' + startDate + '" and data_date <= "' + endDate + '" order by data_date;'
     df = executeSQL(sql)
     return df
 
-def statesSQL(states):
-    sql = "select data_date,state,cases,deaths,cases_diff,deaths_diff,cases_per_100k,deaths_per_100k,cases_diff_per_100k,deaths_diff_per_100k from states where state in("
+def statesSQL(states, startDate, endDate):
+    sql = "select data_date,state,cases,deaths,cases_diff,deaths_diff,cases_per_100k,deaths_per_100k,cases_diff_per_100k,deaths_diff_per_100k,cases_diff_pct,deaths_diff_pct from states where (state in ("
     states = states.replace(",", "\',\'")
-    sql = sql + "'" + states + "') order by state, data_date;"
+    sql = sql + "'" + states + "')) and data_date >= '" + startDate + "' and data_date <= '" + endDate + "' order by state, data_date;"
     return sql
 
 #returns sql command for counties based on input
-def countiesSQL(counties):
+def countiesSQL(counties, startDate, endDate):
     counties = counties.split(',')
-    sql = "select data_date,state,county,cases,deaths,cases_diff,deaths_diff,cases_per_1k,deaths_per_1k,cases_diff_per_100k,deaths_diff_per_100k from counties where "
+    sql = "select data_date,state,county,cases,deaths,cases_diff,deaths_diff,cases_per_1k,deaths_per_1k,cases_diff_per_100k,deaths_diff_per_100k,cases_diff_pct,deaths_diff_pct from counties where ("
     for county in counties:
         countyStateList = county.split(':')
         sql += "(state='"+countyStateList[0]+"' and county='"+countyStateList[1]+"') or "
-    return sql[0:-4]+" order by state, county, data_date;"
+    return sql[0:-4]+") and data_date >= '" + startDate + "' and data_date <= '" + endDate + "' order by state, county, data_date;"
 
 def executeSQL(sql):
     db = getDBConnection()
@@ -62,7 +66,7 @@ def executeSQL(sql):
 def cleanInput(inputs, states_or_counties):
    return
     
-def getStatesGraph(states_selected, deathsOrCasesStates, linearOrLog):
+def getStatesGraph(states_selected, deathsOrCasesStates, linearOrLog, startDate, endDate):
     addNational=False
     column = statesGraphSwitcher[deathsOrCasesStates]
     if(not states_selected):
@@ -77,7 +81,7 @@ def getStatesGraph(states_selected, deathsOrCasesStates, linearOrLog):
                 del states_selected[states_selected.index(region)]
     fig = go.Figure()
     if(not states_selected):
-        df = nationalDF()
+        df = nationalDF(startDate, endDate)
         fig.add_trace(go.Scatter(
             x=df['data_date'],
             y=df[column],
@@ -87,9 +91,9 @@ def getStatesGraph(states_selected, deathsOrCasesStates, linearOrLog):
     else:
         if (isinstance(states_selected, list)):
             inputStates = ','.join(states_selected)
-            sql = statesSQL(inputStates)
+            sql = statesSQL(inputStates, startDate, endDate)
         else:
-            sql = statesSQL(states_selected)
+            sql = statesSQL(states_selected, startDate, endDate)
             states_selected = [states_selected]
         allStatesDF = executeSQL(sql)
         for state in states_selected:
@@ -103,7 +107,7 @@ def getStatesGraph(states_selected, deathsOrCasesStates, linearOrLog):
                 name=state.title()
             ))
         if(addNational):
-            df = nationalDF()
+            df = nationalDF(startDate, endDate)
             fig.add_trace(go.Scatter(
                 x=df['data_date'],
                 y=df[column],
@@ -143,7 +147,7 @@ def getStatesGraph(states_selected, deathsOrCasesStates, linearOrLog):
    
     return fig
 
-def getCountiesGraph(counties_selected, deathsOrCasesCounties,linearOrLog):
+def getCountiesGraph(counties_selected, deathsOrCasesCounties,linearOrLog, startDate, endDate):
     column = countiesGraphSwitcher[deathsOrCasesCounties]
     if(not counties_selected):
         counties_selected = ['Top 5 Counties']
@@ -153,9 +157,9 @@ def getCountiesGraph(counties_selected, deathsOrCasesCounties,linearOrLog):
             del counties_selected[counties_selected.index(region)]
     if (isinstance(counties_selected, list)):
         inputCounties = ','.join(counties_selected)
-        sql = countiesSQL(inputCounties)
+        sql = countiesSQL(inputCounties, startDate, endDate)
     else:
-        sql = countiesSQL(counties_selected)
+        sql = countiesSQL(counties_selected, startDate, endDate)
         counties_selected = [counties_selected]
     allCountiesDF = executeSQL(sql)
     fig = go.Figure()

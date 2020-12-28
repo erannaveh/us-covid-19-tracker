@@ -5,6 +5,7 @@ from dash.dependencies import Input, Output
 from graph_functions import statesSQL, countiesSQL, executeSQL, getStatesGraph, getCountiesGraph
 from table_functions import statesTableSQL, countiesTableSQL, executeTableSQL, getStatesTable, getCountiesTable, getBuildYourOwnTable, place_value, make_percent, ordering_indicator_options
 from callbacks import getTotals, getStatesList, getCountiesList, getClassesList
+from datetime import date, timedelta
 
 state_indicators = ['US Total','Top 5 States','Pacific','Mountain','West North Central','West South Central',
                     'East North Central','East South Central','New England','Mid Atlantic','South Atlantic']+getStatesList()
@@ -52,12 +53,27 @@ newLayout = html.Div([
                     'text-decoration':'underline'
                 }),
     html.Hr(),
+    #html.H2('October 10, 2020',
+    #    style = {'width':'100%',
+    #                'font-size': 30,
+    #                'text-decoration':'underline'
+    #            }),
+    #html.P('- Added chat bot with help from Arjun Gathwala, an AI tool that allows users to ask COVID-related questions with responses compiled from WHO data and other reputable sources.',style={'font-size':20}),
+    #html.Hr(),
+    html.H2('December 26, 2020',
+        style = {'width':'100%',
+                    'font-size': 30,
+                    'text-decoration':'underline'
+                }),
+    html.P('- Added date range option, New Cases Growth Percentage, and New Deaths Growth Percentage for both States and Counties',style={'font-size':20}),
+    html.Hr(),
     html.H2('July 10, 2020',
         style = {'width':'100%',
                     'font-size': 30,
                     'text-decoration':'underline'
                 }),
-    html.P('- Added "Classes" section, allowing users to check which UCSB classes are in-person, online, or hybrid. Intended to help international students find in-person courses and for non-international students to see if they can give up their spot in any courses, due to new ICE regulations.',style={'font-size':20}),
+    html.P('- Added "Classes" section, allowing users to check which UCSB classes are in-person, online, or hybrid. Intended to help international students find in-person courses and for non-international students to see if they can give up their spot in any courses, due to new ICE regulations',style={'font-size':20}),
+    html.P('- Available at www.uscovid19tracker.info/classes/ ',style={'font-size':20}),
     html.Hr(),
     html.H2('July 8, 2020',
         style = {'width':'100%',
@@ -136,13 +152,15 @@ aboutLayout = html.Div([
         - [SB Independent](https://www.independent.com/2020/04/18/new-coronavirus-app-compares-country-and-counties/)
     ''',style={'font-size':25}),
     ])
-
+todayDate = totals['data_date'].iloc[len(totals['data_date'])-1]
+todayDay = todayDate.day
+todayMonth = todayDate.month
+todayYear = todayDate.year
 headerSize = 30
 dataSize = 25
 headerSizeMobile = 35
 dataSizeMobile = 30
-homeLayout = html.Div([ 
-
+homeLayout = html.Div([
         dcc.ConfirmDialogProvider(
             children=html.Div(html.Button('#BLM - CLICK ME', style={'color':'red','font-size':30,'font-family':'Futura, system-ui'}),style={'text-align':'center','margin-top':'1.2em'}),
             id='popup',
@@ -206,6 +224,7 @@ homeLayout = html.Div([
         ],style={
             'width':'100%'
         }),
+        
 
         html.Table([
             html.Tr([
@@ -222,10 +241,19 @@ homeLayout = html.Div([
                         html.Div(
                             dcc.Dropdown(
                             id='deathsOrCasesStates',
-                            options=[{'label': i, 'value': i} for i in ['Cases', 'Deaths','New Cases','New Deaths','Cases/Capita (100k)','Deaths/Capita (100k)', 'New Cases/Capita (100k)','New Deaths/Capita (100k)']],
+                            options=[{'label': i, 'value': i} for i in ['Cases', 'Deaths','New Cases','New Deaths','Cases/Capita (100k)','Deaths/Capita (100k)', 'New Cases/Capita (100k)','New Deaths/Capita (100k)', 'New Cases Growth %', 'New Deaths Growth %']],
                             value='Cases',
                             clearable=False
                             ),style={'float':'right','width':'30%','font-size':14}
+                        ),
+                        dcc.DatePickerRange(
+                            id='datePickerStates',
+                            min_date_allowed=date(2020, 1, 25),
+                            max_date_allowed=date(todayYear, todayMonth, todayDay),
+                            initial_visible_month=date(todayYear, todayMonth, todayDay),
+                            end_date=date(todayYear, todayMonth, todayDay),
+                            start_date=date(2020, 1, 25),
+                            style={'text-align':'center','margin-top':'1.2em'}
                         ),
                         dcc.RadioItems(
                             id='linearOrLogStates',
@@ -248,10 +276,19 @@ homeLayout = html.Div([
                         html.Div(
                             dcc.Dropdown(
                             id='deathsOrCasesCounties',
-                            options=[{'label': i, 'value': i} for i in ['Cases', 'Deaths','New Cases','New Deaths','Cases/Capita (100k)','Deaths/Capita (100k)','New Cases/Capita (100k)','New Deaths/Capita (100k)']],
+                            options=[{'label': i, 'value': i} for i in ['Cases', 'Deaths','New Cases','New Deaths','Cases/Capita (100k)','Deaths/Capita (100k)','New Cases/Capita (100k)','New Deaths/Capita (100k)', 'New Cases Growth %', 'New Deaths Growth %']],
                             value='Cases',
                             clearable=False
                             ),style={'float':'right','width':'30%','font-size':14}
+                        ),
+                        dcc.DatePickerRange(
+                            id='datePickerCounties',
+                            min_date_allowed=date(2020, 1, 25),
+                            max_date_allowed=date(todayYear, todayMonth, todayDay),
+                            initial_visible_month=date(todayYear, todayMonth, todayDay),
+                            end_date=date(todayYear, todayMonth, todayDay),
+                            start_date=date(2020, 1, 25),
+                            style={'text-align':'center','margin-top':'1.2em'}
                         ),
                         dcc.RadioItems(
                             id='linearOrLogCounties',

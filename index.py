@@ -10,6 +10,27 @@ from flask import request
 
 
 app.layout = html.Div([
+#        html.Ul(id='chat',style={
+#                        'float':'right',
+#                       'position': 'fixed',
+#                        'bottom': '0',
+#                        'right': '0',
+#                        'height':'45%',
+#                        'width': '20%',
+#                        'display': 'block',
+#                        'z-index': '2',
+#                        'list-style':'none'
+#                    },
+#                children=[
+#                    html.Li(
+#                        html.Div(id="open_chat",children=[
+#                        ]),
+#                    ),
+#                    html.Li(
+#                        html.Div(id="webchat",children=[
+#                         ]),   
+#                    )
+#        ]),
     html.Table([
             html.Tr([
                 html.Td([
@@ -49,7 +70,7 @@ app.layout = html.Div([
             }
     ),
     dcc.Location(id='url', refresh=True),
-    html.Div(id='page-content')
+    html.Div(id='page-content'),
 ])
 
 def isMobile():

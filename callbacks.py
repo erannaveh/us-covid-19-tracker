@@ -3,6 +3,8 @@ from graph_functions import statesSQL, countiesSQL, executeSQL, getStatesGraph, 
 from table_functions import statesTableSQL, countiesTableSQL, executeTableSQL, getStatesTable, getCountiesTable, getBuildYourOwnTable, place_value
 from class_functions import getData
 from collections import OrderedDict
+import dash_html_components as html
+
 
 from app import app
 
@@ -84,9 +86,11 @@ def set_ordering_indicator_options(stateOrNationally):
      Output('states_indicator_table', 'figure')],
     [Input('states_selected', 'value'),
      Input('deathsOrCasesStates', 'value'),
-    Input('linearOrLogStates','value')])
-def update_states_graph(states_selected, deathsOrCasesStates, linearOrLog):
-    graph = getStatesGraph(states_selected,deathsOrCasesStates, linearOrLog)
+     Input('linearOrLogStates','value'),
+     Input('datePickerStates', 'start_date'),
+     Input('datePickerStates', 'end_date')])
+def update_states_graph(states_selected, deathsOrCasesStates, linearOrLog, startDate, endDate):
+    graph = getStatesGraph(states_selected,deathsOrCasesStates, linearOrLog, startDate, endDate)
     table = getStatesTable(states_selected)
     return graph, table
 
@@ -96,9 +100,11 @@ def update_states_graph(states_selected, deathsOrCasesStates, linearOrLog):
      Output('counties_indicator_table', 'figure')],
     [Input('counties_selected', 'value'),
      Input('deathsOrCasesCounties', 'value'),
-     Input('linearOrLogCounties','value')])
-def update_counties_graph(counties_selected, deathsOrCasesCounties,linearOrLog):
-    graph = getCountiesGraph(counties_selected, deathsOrCasesCounties, linearOrLog)
+     Input('linearOrLogCounties','value'),
+     Input('datePickerCounties', 'start_date'),
+     Input('datePickerCounties', 'end_date')])
+def update_counties_graph(counties_selected, deathsOrCasesCounties,linearOrLog, startDate, endDate):
+    graph = getCountiesGraph(counties_selected, deathsOrCasesCounties, linearOrLog, startDate, endDate)
     table = getCountiesTable(counties_selected)
     return graph, table
 
@@ -179,3 +185,53 @@ def update_time(course):
     time = 'Time: \n' + getData("'"+course+"'",'time')
     return time
 
+@app.callback(
+    Output('webchat','children'),
+    [Input('open_chat','n_clicks')]
+)
+def show_chat(n_clicks):
+    if n_clicks == None:
+        return html.Div(style={'display':'none'})
+    if n_clicks%2==1:
+        return html.Iframe(
+                    id="chat",
+                    src='https://webchat.botframework.com/embed/covid19botservice?s=CLWPBN3CGzs.MCx684Yoqzp4ULuhC5KCTwYyDa9lo2nor0b0RwDW4fY',  
+                    style={
+                        'float':'right',
+                        'position': 'fixed',
+                        'bottom': '0',
+                        'right': '0',
+                        'height': '40%',
+                        'width': '20%',
+                        'display': 'flex',
+                        'z-index': '2'
+                    }
+                )
+
+@app.callback(
+    Output('open_chat','children'),
+    [Input('open_chat','n_clicks')]
+)
+def toggle_button(n_clicks):
+    if n_clicks==None or n_clicks%2==0:
+        return html.Button("CHAT",
+                            style={
+                                'float':'right',
+                                'position': 'fixed',
+                                'bottom': '0',
+                                'right': '0',
+                                'display': 'block',
+                                'z-index': '2',
+                                'margin':'2%'
+                            },
+                            
+                        ),
+    else:
+        return html.Button("X",
+                            style={
+                                'position': 'relative',
+                                'display':'block',
+                                'z-index':'3'
+                            },
+                            
+                        ),
