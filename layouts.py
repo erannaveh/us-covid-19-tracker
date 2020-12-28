@@ -463,7 +463,7 @@ homeLayoutMobile = html.Div([
                         html.Div(
                             dcc.Dropdown(
                             id='deathsOrCasesStates',
-                            options=[{'label': i, 'value': i} for i in ['Cases', 'Deaths','New Cases','New Deaths','Cases/Capita (100k)','Deaths/Capita (100k)','New Cases/Capita (100k)','New Deaths/Capita (100k)']],
+                            options=[{'label': i, 'value': i} for i in ['Cases', 'Deaths','New Cases','New Deaths','Cases/Capita (100k)','Deaths/Capita (100k)','New Cases/Capita (100k)','New Deaths/Capita (100k)', 'New Cases Growth %', 'New Deaths Growth %']],
                             value='Cases',
                             clearable=False
                             ),style={'float':'right','width':'50%'}
@@ -471,6 +471,17 @@ homeLayoutMobile = html.Div([
                     ])
                 ,style={'width':'50%'}),
             ]),
+            html.Tr(
+                dcc.DatePickerRange(
+                            id='datePickerStates',
+                            min_date_allowed=date(2020, 1, 25),
+                            max_date_allowed=date(todayYear, todayMonth, todayDay),
+                            initial_visible_month=date(todayYear, todayMonth, todayDay),
+                            end_date=date(todayYear, todayMonth, todayDay),
+                            start_date=date(2020, 1, 25),
+                            style={'text-align':'center','margin-top':'1.2em','font-size':18}
+                        ),
+            ),
             html.Tr( dcc.RadioItems(
                             id='linearOrLogStates',
                             options=[{'label': i, 'value': i} for i in ['Linear', 'Log']],
@@ -515,7 +526,7 @@ homeLayoutMobile = html.Div([
                         html.Div(
                             dcc.Dropdown(
                             id='deathsOrCasesCounties',
-                            options=[{'label': i, 'value': i} for i in ['Cases', 'Deaths','New Cases','New Deaths','Cases/Capita (100k)','Deaths/Capita (100k)','New Cases/Capita (100k)','New Deaths/Capita (100k)']],
+                            options=[{'label': i, 'value': i} for i in ['Cases', 'Deaths','New Cases','New Deaths','Cases/Capita (100k)','Deaths/Capita (100k)','New Cases/Capita (100k)','New Deaths/Capita (100k)', 'New Cases Growth %', 'New Deaths Growth %']],
                             value='Cases',
                             clearable=False
                             ),style={'float':'right','width':'50%'}
@@ -523,6 +534,17 @@ homeLayoutMobile = html.Div([
                     ])
                 ,style={'width':'50%'})
             ]),
+            html.Tr(
+                dcc.DatePickerRange(
+                            id='datePickerCounties',
+                            min_date_allowed=date(2020, 1, 25),
+                            max_date_allowed=date(todayYear, todayMonth, todayDay),
+                            initial_visible_month=date(todayYear, todayMonth, todayDay),
+                            end_date=date(todayYear, todayMonth, todayDay),
+                            start_date=date(2020, 1, 25),
+                            style={'text-align':'center','margin-top':'1.2em','font-size':18}
+                        ),
+            ),
             html.Tr(
                 dcc.RadioItems(
                             id='linearOrLogCounties',

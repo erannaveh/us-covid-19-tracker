@@ -25,8 +25,8 @@ countiesGraphSwitcher = {
     'Deaths/Capita (100k)': 'deaths_per_1k',
     'New Cases/Capita (100k)': 'cases_diff_per_100k',
     'New Deaths/Capita (100k)': 'deaths_diff_per_100k',
-    'Daily Case Growth %': 'cases_diff_pct', 
-    'Daily Death Growth %': 'deaths_diff_pct'
+    'New Cases Growth %': 'cases_diff_pct', 
+    'New Deaths Growth %': 'deaths_diff_pct'
 }
 
 def nationalDF(startDate, endDate):
