@@ -152,10 +152,14 @@ aboutLayout = html.Div([
         - [SB Independent](https://www.independent.com/2020/04/18/new-coronavirus-app-compares-country-and-counties/)
     ''',style={'font-size':25}),
     ])
-todayDate = totals['data_date'].iloc[len(totals['data_date'])-1]
+todayDate = totals['data_date'].iloc[numRows]
+maxDate = todayDate + timedelta(days=1)
 todayDay = todayDate.day
 todayMonth = todayDate.month
 todayYear = todayDate.year
+maxDay = maxDate.day
+maxMonth = maxDate.month
+maxYear = maxDate.year
 headerSize = 30
 dataSize = 25
 headerSizeMobile = 35
@@ -246,21 +250,26 @@ homeLayout = html.Div([
                             clearable=False
                             ),style={'float':'right','width':'30%','font-size':14}
                         ),
-                        dcc.DatePickerRange(
-                            id='datePickerStates',
-                            min_date_allowed=date(2020, 1, 25),
-                            max_date_allowed=date(todayYear, todayMonth, todayDay),
-                            initial_visible_month=date(todayYear, todayMonth, todayDay),
-                            end_date=date(todayYear, todayMonth, todayDay),
-                            start_date=date(2020, 1, 25),
-                            style={'text-align':'center','margin-top':'1.2em'}
-                        ),
-                        dcc.RadioItems(
-                            id='linearOrLogStates',
-                            options=[{'label': i, 'value': i} for i in ['Linear', 'Log']],
-                            value='Linear',
-                            labelStyle={'display': 'inline-block'}
+                        html.Div(
+                            [
+                                dcc.DatePickerRange(
+                                    id='datePickerStates',
+                                    min_date_allowed=date(2020, 1, 25),
+                                    max_date_allowed=date(maxYear, maxMonth, maxDay),
+                                    end_date=date(todayYear, todayMonth, todayDay),
+                                    start_date=date(2020, 1, 25),
+                                    style={'text-align':'center','margin-top':'1.2em','float':'left'}
+                                ),
+                                dcc.RadioItems(
+                                    id='linearOrLogStates',
+                                    options=[{'label': i, 'value': i} for i in ['Linear', 'Log']],
+                                    value='Linear',
+                                    labelStyle={'display': 'inline-block'},
+                                    style={'text-align':'center','float':'right'}
+                                )
+                            ]
                         )
+                        
                     ])
                 ,style={'width':'50%'}),
                 html.Td(
@@ -284,8 +293,7 @@ homeLayout = html.Div([
                         dcc.DatePickerRange(
                             id='datePickerCounties',
                             min_date_allowed=date(2020, 1, 25),
-                            max_date_allowed=date(todayYear, todayMonth, todayDay),
-                            initial_visible_month=date(todayYear, todayMonth, todayDay),
+                            max_date_allowed=date(maxYear, maxMonth, maxDay),
                             end_date=date(todayYear, todayMonth, todayDay),
                             start_date=date(2020, 1, 25),
                             style={'text-align':'center','margin-top':'1.2em'}
@@ -294,7 +302,8 @@ homeLayout = html.Div([
                             id='linearOrLogCounties',
                             options=[{'label': i, 'value': i} for i in ['Linear', 'Log']],
                             value='Linear',
-                            labelStyle={'display': 'inline-block'}
+                            labelStyle={'display': 'inline-block'},
+                            style={'float':'right'}
                         )
                     ])
                 ,style={'width':'50%'}),
@@ -471,24 +480,24 @@ homeLayoutMobile = html.Div([
                     ])
                 ,style={'width':'50%'}),
             ]),
-            html.Tr(
+            html.Tr( [
                 dcc.DatePickerRange(
-                            id='datePickerStates',
-                            min_date_allowed=date(2020, 1, 25),
-                            max_date_allowed=date(todayYear, todayMonth, todayDay),
-                            initial_visible_month=date(todayYear, todayMonth, todayDay),
-                            end_date=date(todayYear, todayMonth, todayDay),
-                            start_date=date(2020, 1, 25),
-                            style={'text-align':'center','margin-top':'1.2em','font-size':18}
-                        ),
-            ),
-            html.Tr( dcc.RadioItems(
+                    id='datePickerStates',
+                    min_date_allowed=date(2020, 1, 25),
+                    max_date_allowed=date(maxYear, maxMonth, maxDay),
+                    end_date=date(todayYear, todayMonth, todayDay),
+                    start_date=date(2020, 1, 25),
+                    style={'text-align':'center','margin-top':'1.2em','font-size':18, 'float':'left'}
+                ),
+                dcc.RadioItems(
                             id='linearOrLogStates',
                             options=[{'label': i, 'value': i} for i in ['Linear', 'Log']],
                             value='Linear',
-                            labelStyle={'display': 'inline-block'}
+                            labelStyle={'display': 'inline-block'},
+                            style={'float':'right'}
                         )
-            ),
+            ]),
+            
             html.Tr([
                 html.Td(dcc.Graph(id='states_indicator_graphic', config={'staticPlot': True}),style={'vertical-align':'top','width':'50%'})
             ]),
@@ -534,25 +543,24 @@ homeLayoutMobile = html.Div([
                     ])
                 ,style={'width':'50%'})
             ]),
-            html.Tr(
-                dcc.DatePickerRange(
-                            id='datePickerCounties',
-                            min_date_allowed=date(2020, 1, 25),
-                            max_date_allowed=date(todayYear, todayMonth, todayDay),
-                            initial_visible_month=date(todayYear, todayMonth, todayDay),
-                            end_date=date(todayYear, todayMonth, todayDay),
-                            start_date=date(2020, 1, 25),
-                            style={'text-align':'center','margin-top':'1.2em','font-size':18}
-                        ),
-            ),
-            html.Tr(
+            
+            html.Tr([
                 dcc.RadioItems(
-                            id='linearOrLogCounties',
-                            options=[{'label': i, 'value': i} for i in ['Linear', 'Log']],
-                            value='Linear',
-                            labelStyle={'display': 'inline-block'}
-                        )
-            ),
+                    id='linearOrLogCounties',
+                    options=[{'label': i, 'value': i} for i in ['Linear', 'Log']],
+                    value='Linear',
+                    labelStyle={'display': 'inline-block'},
+                    style={'float':'right'}
+                ),
+                dcc.DatePickerRange(
+                    id='datePickerCounties',
+                    min_date_allowed=date(2020, 1, 25),
+                    max_date_allowed=date(maxYear, maxMonth, maxDay),
+                    end_date=date(todayYear, todayMonth, todayDay),
+                    start_date=date(2020, 1, 25),
+                    style={'text-align':'center','margin-top':'1.2em','font-size':18}
+                ),
+            ]),
             html.Tr([
                 html.Td(dcc.Graph(id='counties_indicator_graphic', config={'staticPlot': True}),style={'vertical-align':'top','width':'50%'})
             ]),
